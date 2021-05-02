@@ -48,8 +48,8 @@ public class OcrProc {
             json.put("timestamp", System.currentTimeMillis());
             JSONObject image = new JSONObject();
             image.put("format", "jpg");
-            //image should be public, otherwise, should use data
-            //image.put("url", "https://kr.object.ncloudstorage.com/fresh-img/KakaoTalk_20210424_225347928.jpg");
+            /*image should be public, otherwise, should use data
+            image.put("url", "https://kr.object.ncloudstorage.com/fresh-img/KakaoTalk_20210424_225347928.jpg");*/
 
             FileInputStream inputStream = new FileInputStream(image_path);
             image_path=null;

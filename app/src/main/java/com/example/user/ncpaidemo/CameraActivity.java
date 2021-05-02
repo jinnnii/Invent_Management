@@ -37,10 +37,11 @@ import static android.os.Environment.DIRECTORY_PICTURES;
 public class CameraActivity extends BaseActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 672;
-    private String imageFilePath;
+    private String imageFilePath; //임시 파일 경로
     private Uri photoUri;
 
-    private MediaScanner mMediaScanner; // 사진 저장 시 갤러리 폴더에 바로 반영사항을 업데이트 시켜주려면 이 것이 필요하다(미디어 스캐닝)
+    //note 사진 저장 시 갤러리 폴더에 바로 반영사항을 업데이트 (미디어 스캐닝)
+    private MediaScanner mMediaScanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class CameraActivity extends BaseActivity {
         setContentView(R.layout.content_camera);
 
 
-        // 사진 저장 후 미디어 스캐닝을 돌려줘야 갤러리에 반영됨.
+        // note 사진 저장 후 미디어 스캐닝을 돌려줘야 갤러리에 반영됨.
         mMediaScanner = MediaScanner.getInstance(getApplicationContext());
 
 
@@ -66,9 +67,15 @@ public class CameraActivity extends BaseActivity {
                 photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                photoFile.deleteOnExit();
             }
+
+            if(photoFile.exists())  photoFile.deleteOnExit(); //note 임시 파일 삭제
         }
 
+
+
+        // note OCR
         findViewById(R.id.btn_ocr_translate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +86,7 @@ public class CameraActivity extends BaseActivity {
 
     }
 
-
+    // note 임시 촬영 파일 생성
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "TEST_" + timeStamp + "_";
@@ -89,9 +96,10 @@ public class CameraActivity extends BaseActivity {
                 ".png",
                 storageDir
         );
+
+        //note 임시 파일 절대 경로
         imageFilePath = image.getAbsolutePath();
-        TextView textView = findViewById(R.id.test__rudfh);
-        textView.setText(imageFilePath);
+
         return image;
     }
 
@@ -100,7 +108,11 @@ public class CameraActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
+
+            //note 이미지 해상도 축소
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2; //2분의 1크기로 비트맵 객체 생성
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath,options);
             ExifInterface exif = null;
 
             try {
@@ -130,7 +142,7 @@ public class CameraActivity extends BaseActivity {
                 file.mkdirs();
 
             File f = new File(strFolderName + "/" + filename + ".png");
-            result = f.getPath();
+            image_path = f.getPath();
 
             FileOutputStream fOut = null;
             try {
@@ -140,7 +152,7 @@ public class CameraActivity extends BaseActivity {
                 result = "Save Error fOut";
             }
 
-            // 비트맵 사진 폴더 경로에 저장
+            // note 비트맵 사진 폴더 경로에 저장
             rotate(bitmap, exifDegree).compress(Bitmap.CompressFormat.PNG, 70, fOut);
 
             try {
@@ -150,14 +162,14 @@ public class CameraActivity extends BaseActivity {
             }
             try {
                 fOut.close();
-                // 방금 저장된 사진을 갤러리 폴더 반영 및 최신화
+                // note 방금 저장된 사진을 갤러리 폴더 반영 및 최신화
                 mMediaScanner.mediaScanning(strFolderName + "/" + filename + ".png");
             } catch (IOException e) {
                 e.printStackTrace();
                 result = "File close Error";
             }
 
-            // 이미지 뷰에 비트맵을 set하여 이미지 표현
+            // note 이미지 뷰에 비트맵을 set하여 이미지 표현
             ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap, exifDegree));
 
 
@@ -175,20 +187,11 @@ public class CameraActivity extends BaseActivity {
         return 0;
     }
 
+    //note 카메라에 맞게 이미지 로테이션
     private Bitmap rotate(Bitmap bitmap, float degree) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
-       // getResizedBitmap(bitmap, R.id.iv_result,2,bitmap.getWidth(),bitmap.getHeight());
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
-
-    // 이미지 용량, 사이즈 줄이기
-    public static Bitmap getResizedBitmap(Resources resources, int id, int size, int width, int height){
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = size;
-        Bitmap src = BitmapFactory.decodeResource(resources, id, options);
-        Bitmap resized = Bitmap.createScaledBitmap(src, width, height, true);
-        return resized;
     }
 
 

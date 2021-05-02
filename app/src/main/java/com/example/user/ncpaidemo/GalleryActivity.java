@@ -27,7 +27,6 @@ import java.io.OutputStream;
 public class GalleryActivity extends BaseActivity{
 
     ImageView imageView;
-    public static String image_path = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +66,6 @@ public class GalleryActivity extends BaseActivity{
                         uri = data.getData();
                     }
                     if(uri != null){
-                        TextView textView = findViewById(R.id.test__rudfh);
-                        //textView.setText(createCopyAndReturnRealPath(this,uri));
-                        textView.setText(getFullPathFromUri(this,uri));
                         image_path = getFullPathFromUri(this,uri);
                     }
                     System.out.println("##gallery_success");
