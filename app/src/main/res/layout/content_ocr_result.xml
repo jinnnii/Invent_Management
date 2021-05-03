@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="400dp"
-    android:layout_height="wrap_content"
+    android:layout_height="600dp"
     android:padding="20dp"
     android:background="@drawable/popup_round"
     tools:context=".OcrActivity">
@@ -44,14 +44,14 @@
             android:layout_marginBottom="20dp">
             <!--note 가게명-->
             <TextView
+                android:id="@+id/store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textSize="16sp"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="원마트"/>
+                android:textColor="@color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,81 +60,104 @@
                 >
                 <!--note 날짜(년도)-->
                 <TextView
+                    android:id="@+id/year"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:text="2021년"
                     />
                 <!--note 날짜(월/일/요일)-->
                 <TextView
+                    android:id="@+id/month_day"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="16dp"
-                    android:textColor="@color/black"
-                    android:text="3월 19일 금요일"/>
+                    android:textColor="@color/black" />
 
          </LinearLayout>
 
 
         </LinearLayout>
 
-        <!--note 품목-->
-        <LinearLayout
+        <!--note !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!품목!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+        <ScrollView
+            android:id="@+id/ScrollView1"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:background="@drawable/shadow"
-            >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingLeft="20dp"
-                android:gravity="center_vertical"
-                android:text="품목" />
-
-            <View style="@style/Line_width" />
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                >
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
+                    <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="20dp"
-                    android:gravity="center_vertical"
-                    android:text="단가" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/items"
+                    android:layout_marginBottom="5dp"
+                        tools:ignore="ExtraText">
 
-                <View style="@style/Line_height" />
+                        <!--note OcrResultActivity에 동적 구현 함
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/shadow"
+                        >
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="20dp"
-                    android:gravity="center_vertical"
-                    android:text="수량" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingLeft="20dp"
+                            android:gravity="center_vertical"
+                            android:text="품목" />
 
+                        <View style="@style/Line_width" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            >
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:paddingLeft="20dp"
+                                android:gravity="center_vertical"
+                                android:text="단가" />
+
+                            <View style="@style/Line_height" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:paddingLeft="20dp"
+                                android:gravity="center_vertical"
+                                android:text="수량" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="20dp"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_500"
+                        android:text="금액"
+                        tools:ignore="RtlHardcoded" />-->
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="right|center_vertical"
-            android:paddingRight="20dp"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_500"
-            android:text="금액"/>
-
+        </ScrollView>
         <!--<com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textView_ocr_result"
             android:layout_width="306dp"
@@ -144,12 +167,6 @@
             app:layout_constraintEnd_toEndOf="@+id/btn_ocr_translate"
             app:layout_constraintStart_toStartOf="@+id/btn_ocr_translate"
             app:layout_constraintTop_toBottomOf="@+id/btn_ocr_translate" />-->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView_ocr_result"
-            android:text="test"/>
 
         <!-- 닫기 버튼 -->
         <LinearLayout
