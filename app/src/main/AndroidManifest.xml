@@ -31,8 +31,6 @@
         </activity>
         <activity android:name="com.example.user.ncpaidemo.AuthActivity"
             tools:ignore="Instantiatable" />
-        <activity android:name="com.example.user.ncpaidemo.OcrActivity"
-            tools:ignore="Instantiatable" />
         <activity android:name="com.example.user.ncpaidemo.CameraActivity"
             tools:ignore="Instantiatable" />
         <activity android:name=".GalleryActivity"
@@ -40,7 +38,8 @@
 
 
         <!--팝업 액티비티-->
-        <activity android:name=".PopupActivity" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".AddImageMenu" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".OcrActivity" android:theme="@android:style/Theme.Dialog" />
 
         <!--카메라-->
         <provider

@@ -97,6 +97,7 @@ public class OcrProc {
             System.out.println(e);
         }
         System.out.println(">>>>>>>>>>"+ ocrMessage);
+
         return ocrMessage;
     }
 

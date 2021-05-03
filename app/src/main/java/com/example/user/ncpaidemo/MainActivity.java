@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity {
     //버튼 팝업 액티비티
     public void mOnPopupClick(){
         //데이터 담아서 팝업(액티비티) 호출
-        Intent intent = new Intent(this, PopupActivity.class);
+        Intent intent = new Intent(this, AddImageMenu.class);
         intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
     }
