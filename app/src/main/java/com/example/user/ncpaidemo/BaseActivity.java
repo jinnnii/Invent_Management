@@ -58,14 +58,6 @@ public class BaseActivity extends AppCompatActivity {
 
                 return true;
 
-
-            case R.id.menu_ocr:
-
-                intent = new Intent(getApplicationContext(), OcrActivity.class);
-                startActivity(intent);
-
-                return true;
-
             default :
                 return super.onOptionsItemSelected(item);
         }
