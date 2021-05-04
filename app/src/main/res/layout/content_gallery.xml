@@ -17,15 +17,4 @@
         android:layout_height="wrap_content"
         android:text="변환하기>>"/>
 
-    <Button
-        android:id="@+id/test_rudfh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="경로 출력"
-        />
-    <TextView
-        android:id="@+id/test__rudfh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
 </LinearLayout>

@@ -187,8 +187,12 @@ public class OcrActivity extends PopupActivity {
         //note 매장 명
         public String store() throws JSONException {
 
-            if(result.getJSONObject("storeInfo").getJSONObject("name")!=null){
-                return result.getJSONObject("storeInfo").getJSONObject("name").optString("text","noValue");
+            JSONObject storeInfo = result.optJSONObject("storeInfo");
+
+            if(storeInfo!=null){
+                if (storeInfo.optJSONObject("name") != null) {
+                    return storeInfo.optJSONObject("name").optString("text","noValue");
+                }
             }
             return null;
 
@@ -198,9 +202,12 @@ public class OcrActivity extends PopupActivity {
         public String date(String value) throws JSONException {
 
             //note value = year, month, day
-            if(result.getJSONObject("paymentInfo").getJSONObject("date")!=null){
-                JSONObject date = result.getJSONObject("paymentInfo").getJSONObject("date").getJSONObject("formatted");
-                return date.optString(value,"noValue");
+            JSONObject paymentInfo = result.optJSONObject("paymentInfo");
+            if(paymentInfo!=null){
+                if(paymentInfo.optJSONObject("date")!=null){
+                    JSONObject date = paymentInfo.getJSONObject("date").getJSONObject("formatted");
+                    if(date!=null) return date.optString(value,"noValue");
+                }
             }
             return null;
 
@@ -209,8 +216,10 @@ public class OcrActivity extends PopupActivity {
         //note 총 금액
         public String total() throws JSONException {
 
-            if( result.getJSONObject("totalPrice").getJSONObject("price")!=null){
-                return result.getJSONObject("totalPrice").getJSONObject("price").optString("text","novalue");
+            JSONObject total = result.getJSONObject("totalPrice");
+            if( total != null){
+                if(total.getJSONObject("price")!=null)
+                    return result.getJSONObject("totalPrice").getJSONObject("price").optString("text","novalue");
             }
             return null;
         }
@@ -218,34 +227,38 @@ public class OcrActivity extends PopupActivity {
 
         //note 항목 상세
         public String items(String value, int i, int j) throws JSONException {
-            JSONArray items = subResults.getJSONObject(i).getJSONArray("items");
-            JSONObject item = items.getJSONObject(j);
-            JSONObject price = item.getJSONObject("price");
+            JSONArray items = subResults.getJSONObject(i).optJSONArray("items");
+            JSONObject item = items.optJSONObject(j);
+            JSONObject price = item.optJSONObject("price");
 
             switch (value) {
                 case "item_name": //note 항목 이름
                     if(item.optJSONObject("name")!=null){
-                        path = item.getJSONObject("name").optString("text", "noValue");
+                        return item.optJSONObject("name").optString("text", "noValue");
                     }
                     break;
                 case "item_count": //note 항목 수량
                     if(item.optJSONObject("count")!=null)
                     {
-                        path = item.optJSONObject("count").optString("text", "noValue");
+                        return item.optJSONObject("count").optString("text", "noValue");
                     }
                     break;
                 case "item_unit_price": //note 단가
-                    if(item.optJSONObject("name")!=null){
-                        path = price.getJSONObject("unitPrice").optString("text", "noValue");
+                    if(price!=null){
+                        if(price.optJSONObject("uniPrice")!=null) {
+                            return price.optJSONObject("unitPrice").optString("text", "noValue");
+                        }
                     }
                     break;
                 case "item_price": //note 금액
-                    if(item.optJSONObject("name")!=null){
-                        path = price.getJSONObject("price").optString("text", "noValue");
+                    if(price!=null){
+                        if(price.optJSONObject("price")!=null) {
+                            return  price.optJSONObject("price").optString("text", "noValue");
+                        }
                     }
                     break;
             }
-            return path;
+            return null;
         }
     }
 

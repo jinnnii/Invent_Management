@@ -39,10 +39,6 @@ public class MainActivity extends BaseActivity {
     private FragmentTransaction ft;
     private Frag1 frag1;
 
-    /*//카메라 관련
-    private static final int REQUEST_IMAGE_CAPTURE = 672;
-    private String imageFilePath;
-    private Uri photoUri;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,37 +65,6 @@ public class MainActivity extends BaseActivity {
 
         frag1=new Frag1();
 
-
-        /*//카메라 권한 허용용
-       TedPermission.with(getApplicationContext())
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage("카메라 권한이 필요합니다.")
-                .setDeniedMessage("거부하셨습니다.")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .check();
-
-        //카메라 앱 호출 및 저장
-        findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(intent.resolveActivity(getPackageManager())!=null){
-                    File photoFile = null;
-                    try{
-                        photoFile = createImageFile();
-                    }catch (IOException e){
-
-                    }
-
-                    if(photoFile != null){
-                        photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(),photoFile);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                    }
-                }
-            }
-        });*/
-
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -124,18 +89,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-   /* //카메라 권한 허용 및 거부
-    PermissionListener permissionListener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            Toast.makeText(getApplicationContext(), "권한이 허용됨", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions){
-            Toast.makeText(getApplicationContext(), "권한이 거부됨", Toast.LENGTH_SHORT).show();
-        }
-    };*/
     // 프레그먼트 교체
     private void setFrag(int n)
     {

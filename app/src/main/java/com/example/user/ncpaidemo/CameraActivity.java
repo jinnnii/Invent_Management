@@ -143,6 +143,7 @@ public class CameraActivity extends BaseActivity {
 
             File f = new File(strFolderName + "/" + filename + ".png");
             image_path = f.getPath();
+            System.out.println("<>>>>>>>>>>>>>>>>>>>>>>>"+image_path);
 
             FileOutputStream fOut = null;
             try {

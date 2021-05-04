@@ -17,9 +17,4 @@
         android:layout_height="wrap_content"
         android:text="변환하기"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/test__rudfh"/>
-
 </LinearLayout>
