@@ -6,15 +6,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,13 +28,16 @@ import java.io.OutputStream;
 
 
 
-public class GalleryActivity extends BaseActivity{
+public class GalleryActivity extends AppCompatActivity {
+    //n  이미지 경로
+    public static String image_path = null;
 
     ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.content_gallery);
 
         imageView = (ImageView)findViewById(R.id.iv_result);
@@ -45,6 +52,7 @@ public class GalleryActivity extends BaseActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OcrActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

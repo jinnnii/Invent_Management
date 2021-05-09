@@ -1,6 +1,7 @@
 package com.example.user.ncpaidemo;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,7 +50,6 @@ public class OcrActivity extends PopupActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //note 투명 배경
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
-
         setContentView(R.layout.content_ocr_result);
 
         resultOcr();
@@ -60,18 +60,18 @@ public class OcrActivity extends PopupActivity {
 
 
         //todo OCR API 직접 접근 [1]
-        /*SharedPreferences sharedPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
 
         final String ocrApiGwUrl = sharedPref.getString("ocr_api_gw_url", "");
         final String ocrSecretKey = sharedPref.getString("ocr_secret_key", "");
 
         OcrActivity.PapagoNmtTask nmtTask = new OcrActivity.PapagoNmtTask();
-        nmtTask.execute(ocrApiGwUrl, ocrSecretKey);*/
+        nmtTask.execute(ocrApiGwUrl, ocrSecretKey);
 
 
         //todo ocr 샘플 확인용 (OCR API 직접 접근 X) [2]
-        String str = getString(R.string.ocr_sample);
-        ReturnThreadResult(str); //note JSON 결과값 나누기
+        //String str = getString(R.string.ocr_sample);
+        //ReturnThreadResult(str); //note JSON 결과값 나누기
 
 
     }

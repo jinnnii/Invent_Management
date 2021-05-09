@@ -28,9 +28,6 @@ import java.util.Date;
 
 public class BaseActivity extends AppCompatActivity {
 
-    //n  이미지 경로
-    public static String image_path = null;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_actions, menu);

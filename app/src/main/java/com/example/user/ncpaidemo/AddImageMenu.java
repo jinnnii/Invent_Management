@@ -32,6 +32,7 @@ public class AddImageMenu extends  PopupActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         // note 갤러리
@@ -40,6 +41,7 @@ public class AddImageMenu extends  PopupActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GalleryActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
