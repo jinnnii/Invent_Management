@@ -3,23 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="400dp"
-    android:layout_height="600dp"
-    android:padding="20dp"
+    android:layout_height="700dp"
     android:background="@drawable/popup_round"
     tools:context=".OcrActivity">
 
     <LinearLayout
         android:id="@+id/image_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop ="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_weight="1">
         <!--note 타이틀-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,7 +89,8 @@
         <ScrollView
             android:id="@+id/ScrollView1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -158,34 +164,44 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-        <!--<com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textView_ocr_result"
-            android:layout_width="306dp"
-            android:layout_height="242dp"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/btn_ocr_translate"
-            app:layout_constraintStart_toStartOf="@+id/btn_ocr_translate"
-            app:layout_constraintTop_toBottomOf="@+id/btn_ocr_translate" />-->
-
+    </LinearLayout>
         <!-- 닫기 버튼 -->
         <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints"
+            android:layout_margin="10dp">
+
             <Button
-                android:text="취소"
-                android:textSize="15sp"
-                android:textColor="@color/purple_700"
-                android:padding="16dp"
-                android:gravity="center"
-                android:background="#00000000"
                 android:layout_width="match_parent"
                 android:layout_height="53dp"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
                 android:onClick="mOnClose"
+                android:padding="16dp"
+                android:text="취소"
+                android:textColor="@color/purple_700"
+                android:textSize="15sp"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
+                android:onClick="mOnClose"
+                android:padding="16dp"
+                android:text="확인"
+                android:textColor="@color/purple_700"
+                android:textSize="15sp"
                 tools:ignore="OnClick" />
         </LinearLayout>
-
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
