@@ -8,38 +8,81 @@
     tools:context=".AddImageMenu">
 
     <!-- 타이틀바 -->
-    <LinearLayout
+
+    <RadioGroup
+        android:id="@+id/inoutGroup"
         android:orientation="horizontal"
+        android:padding="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </LinearLayout>
+        <RadioButton
+            android:id="@+id/inbtn"
+            android:button="@null"
+            android:gravity="center"
+            android:background="@drawable/button_round_solid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_700"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:text="입고"/>
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent"/>
+        <RadioButton
+            android:id="@+id/outbtn"
+            android:button="@null"
+            android:gravity="center"
+            android:background="@drawable/button_round_solid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_700"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:text="출고"/>
+
+    </RadioGroup>
     <!-- //end 타이틀바 -->
 
     <!-- Notice -->
     <LinearLayout
+        android:id="@+id/input_option"
+        android:visibility="gone"
         android:padding="30dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/camera"
-            android:background="@drawable/shadow"
+            android:background="@drawable/button_round_solid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_700"
             android:padding="15dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:text="카메라"/>
 
         <Button
             android:id="@+id/gallery"
-            android:background="@drawable/shadow"
+            android:background="@drawable/button_round_solid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/purple_700"
+            android:layout_marginBottom="5dp"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:text="갤러리"/>
+
+        <Button
+            android:id="@+id/self_btn"
+            android:background="@drawable/button_round_solid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/purple_700"
             android:padding="15dp"
             android:layout_weight="1"
-            android:text="갤러리"/>
+            android:text="직접선택"/>
 
     </LinearLayout>
 

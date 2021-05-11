@@ -1,13 +1,22 @@
 package com.example.user.ncpaidemo;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.RequiresApi;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -16,14 +25,20 @@ import java.util.ArrayList;
 
 public class AddImageMenu extends  PopupActivity {
 
+    int inoutFlag; //       0 : 입고 /    1: 출고
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         //note 타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.flag_plus);
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
+
+        RadioGroup inoutGroup = findViewById(R.id.inoutGroup);
+        inoutGroup.setOnCheckedChangeListener(radioGroupButtonChangeListener);
 
 
         // note 카메라
@@ -63,6 +78,27 @@ public class AddImageMenu extends  PopupActivity {
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
             Toast.makeText(getApplicationContext(), "권한이 거부됨",Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener = new RadioGroup.OnCheckedChangeListener() {
+        @SuppressLint("UseCompatLoadingForDrawables")
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        @Override public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+            findViewById(R.id.input_option).setVisibility(View.VISIBLE);
+            Button inbtn = findViewById(R.id.inbtn);
+            Button outbtn = findViewById(R.id.outbtn);
+
+
+            if(i == R.id.inbtn){
+                inbtn.setBackground(getResources().getDrawable(R.drawable.button_round));
+                outbtn.setBackground(getResources().getDrawable(R.drawable.button_round_solid));
+            }
+            else if(i == R.id.outbtn){
+                outbtn.setBackground(getResources().getDrawable(R.drawable.button_round));
+                inbtn.setBackground(getResources().getDrawable(R.drawable.button_round_solid));
+            }
+
         }
     };
 
