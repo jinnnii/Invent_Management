@@ -60,6 +60,25 @@ public class AddImageMenu extends  PopupActivity {
             }
         });
 
+        //note 직접입력
+        findViewById(R.id.self_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(inoutFlag == 0) //입고
+                {
+                    Intent intent = new Intent(getApplicationContext(), SelfInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else if(inoutFlag == 1)//출고
+                {
+                    Intent intent = new Intent(getApplicationContext(), SelfOutActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
         // 권한 체크
         TedPermission.with(getApplicationContext())
                 .setPermissionListener(permissionListener)
@@ -93,10 +112,12 @@ public class AddImageMenu extends  PopupActivity {
             if(i == R.id.inbtn){
                 inbtn.setBackground(getResources().getDrawable(R.drawable.button_round));
                 outbtn.setBackground(getResources().getDrawable(R.drawable.button_round_solid));
+                inoutFlag = 0;
             }
             else if(i == R.id.outbtn){
                 outbtn.setBackground(getResources().getDrawable(R.drawable.button_round));
                 inbtn.setBackground(getResources().getDrawable(R.drawable.button_round_solid));
+                inoutFlag = 1;
             }
 
         }

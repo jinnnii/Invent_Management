@@ -59,4 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-database'
 
+    //원형 이미지 뷰 추가
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }

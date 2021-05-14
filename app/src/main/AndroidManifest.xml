@@ -44,6 +44,8 @@
         <!--팝업 액티비티-->
         <activity android:name=".AddImageMenu" android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".OcrActivity" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".SelfInActivity" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".SelectInActivity" android:theme="@android:style/Theme.Dialog" />
 
         <!--카메라-->
         <provider
