@@ -10,12 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.bumptech.glide.load.engine.Resource;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
@@ -43,6 +50,21 @@ public class SelfInActivity extends PopupActivity{
         });
 
 
+
+        //스피너
+        /*Spinner s = (Spinner)findViewById(R.id.spinner);
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });*/
+
+
+
+
         }
 
 
@@ -51,12 +73,14 @@ public class SelfInActivity extends PopupActivity{
             ListView listView = findViewById(R.id.in_group);
 
             String name = intent.getStringExtra("name");
+            String lCategory = intent.getStringExtra("lCategory");
+            String sCategory = intent.getStringExtra("sCategory");
 
-            UserItem userItem = new UserItem(name, null,null);
+            UserItem userItem = new UserItem(name, lCategory,sCategory);
             list.add(userItem);
 
-            UserItemAdapter adpater = new UserItemAdapter(this, R.layout.content_self_input_list, list);
-            listView.setAdapter(adpater);
+            UserItemAdapter adapter = new UserItemAdapter(this, R.layout.content_self_input_list, list);
+            listView.setAdapter(adapter);
 
             setListViewHeightBasedOnChildren(listView);
 

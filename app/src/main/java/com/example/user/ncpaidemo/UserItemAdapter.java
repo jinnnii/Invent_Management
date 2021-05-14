@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kakao.usermgmt.response.model.User;
@@ -61,6 +62,23 @@ public class UserItemAdapter extends BaseAdapter{
         if(layout==R.layout.content_self_input_list){
             EditText name =(EditText)convertView.findViewById(R.id.item_name);
             name.setText(userItem.getName());
+
+            /*TextView lCategory =(TextView) convertView.findViewById(R.id.item_lCategory);
+            TextView sCategory =(TextView) convertView.findViewById(R.id.item_sCategory);
+            lCategory.setText(userItem.getlCategory());
+            sCategory.setText(userItem.getsCategory());*/
+
+            TextView category = (TextView) convertView.findViewById(R.id.item_category);
+            category.setText(userItem.getlCategory()+" ("+userItem.getsCategory()+")");
+
+            convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    data.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         return convertView;

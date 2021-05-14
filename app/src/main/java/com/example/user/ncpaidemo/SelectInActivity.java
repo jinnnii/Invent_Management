@@ -103,6 +103,8 @@ public class SelectInActivity extends PopupActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 intent = new Intent(getApplicationContext(),SelfInActivity.class);
                 intent.putExtra("name", list.get(position).getName());
+                intent.putExtra("lCategory", list.get(position).getlCategory());
+                intent.putExtra("sCategory", list.get(position).getsCategory());
             }
         });
     }
