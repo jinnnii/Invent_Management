@@ -46,6 +46,7 @@
         <activity android:name=".OcrActivity" android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".SelfInActivity" android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".SelectInActivity" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".OcrInActivity" android:theme="@android:style/Theme.Dialog" />
 
         <!--카메라-->
         <provider

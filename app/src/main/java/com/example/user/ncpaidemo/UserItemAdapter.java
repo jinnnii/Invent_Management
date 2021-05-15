@@ -48,6 +48,9 @@ public class UserItemAdapter extends BaseAdapter{
         }
         UserItem userItem = data.get(position);
 
+
+        //note 추가할 사용자 원재료 리스트
+
         if(layout==R.layout.content_select_in_list){
 
             //이름
@@ -59,6 +62,7 @@ public class UserItemAdapter extends BaseAdapter{
             category.setText(userItem.getlCategory()+" ) "+userItem.getsCategory());
         }
 
+        //note 추가된 사용자 원재료 리스트
         if(layout==R.layout.content_self_input_list){
             EditText name =(EditText)convertView.findViewById(R.id.item_name);
             name.setText(userItem.getName());
@@ -79,6 +83,21 @@ public class UserItemAdapter extends BaseAdapter{
                     notifyDataSetChanged();
                 }
             });
+        }
+
+        //note 영수증 인식 결과 리스트
+        if(layout==R.layout.content_ocr_list){
+
+            TextView name = (TextView)convertView.findViewById(R.id.item_name);
+            TextView count = (TextView)convertView.findViewById(R.id.item_count);
+            TextView unit_price = (TextView)convertView.findViewById(R.id.item_unit_price);
+            TextView price =(TextView)convertView.findViewById(R.id.item_price);
+
+            name.setText(userItem.getName());
+            count.setText(userItem.getCount());
+            price.setText(userItem.getPrice());
+            unit_price.setText(userItem.getUnitPrice());
+
         }
 
         return convertView;

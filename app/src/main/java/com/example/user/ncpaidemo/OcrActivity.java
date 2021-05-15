@@ -1,10 +1,7 @@
 package com.example.user.ncpaidemo;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -14,7 +11,10 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
 import static android.view.Gravity.RIGHT;
+import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
 
 public class OcrActivity extends PopupActivity {
 
@@ -43,6 +44,8 @@ public class OcrActivity extends PopupActivity {
 
     String total_price;
 
+    int item_total_count=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +53,11 @@ public class OcrActivity extends PopupActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //note 투명 배경
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
-        setContentView(R.layout.content_ocr_result);
+        setContentView(R.layout.content_ocr);
 
         resultOcr();
+
+        Button next = findViewById(R.id.next);
 
     }
 
@@ -101,6 +106,8 @@ public class OcrActivity extends PopupActivity {
         String img = rlt;
 
         try {
+
+
             JSONObject jsonObject = new JSONObject(img);
             AddJsonPath path = new AddJsonPath(jsonObject);
 
@@ -125,6 +132,7 @@ public class OcrActivity extends PopupActivity {
                     item_unit_price.add(path.items("item_unit_price", i, j)); //note 단가
                     item_price.add(path.items("item_price", i, j)); //note 금액
 
+                    item_total_count++;
 
                 }
             }
@@ -135,11 +143,33 @@ public class OcrActivity extends PopupActivity {
             printLog(path); // note 로그 출력
             printTextView();
 
+            //note ListView
+            setListView();
+
 
         } catch (Exception e) {
             System.out.println("Error!!");
             e.printStackTrace();
         }
+    }
+
+    public void setListView() {
+
+            ListView listView = findViewById(R.id.items);
+
+            ArrayList<UserItem> list = new ArrayList<>();
+
+            for(int i=0; i<item_total_count;i++){
+
+                UserItem userItem = new UserItem(item_name.get(i),store_name,item_count.get(i),item_unit_price.get(i),item_price.get(i));
+                list.add(userItem);
+            }
+
+            UserItemAdapter adpater = new UserItemAdapter(this, R.layout.content_ocr_list, list);
+            listView.setAdapter(adpater);
+
+            setListViewHeightBasedOnChildren(listView);
+
     }
 
     //note Log 출력
@@ -273,115 +303,8 @@ public class OcrActivity extends PopupActivity {
         years.setText(year + "년");
         month_day.setText(month + "월" + " " + day + "일");
 
-        createItems(); //note 물품
-
     }
 
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    public void createItems(){
-
-        LinearLayout items = findViewById(R.id.items);
-        System.out.println("+++++++++++++++++++" + item_name.size());
-        for(int i = 0; i<item_name.size(); i++){
-
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
-            LinearLayout linear = new LinearLayout(this);
-            linear.setOrientation(LinearLayout.VERTICAL);
-            linear.setBackground(getResources().getDrawable(R.drawable.shadow));
-            param.bottomMargin=(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
-            param.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-            linear.setLayoutParams(param);
-
-            LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
-
-            //note 품목 명
-            TextView name = new TextView(this);
-            name.setPadding((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()),0,0,0);
-            name.setGravity(CENTER_VERTICAL);
-            name.setText(item_name.get(i));
-            param2.weight=1;
-            name.setLayoutParams(param2);
-            linear.addView(name,param2);
-
-            LinearLayout.LayoutParams param3 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            //note 가로선
-            View line = new View(this);
-            line.setBackgroundColor(getResources().getColor(R.color.grey_200));
-            param3.height= 1;
-            line.setLayoutParams(param3);
-            linear.addView(line,param3);
-
-            LinearLayout.LayoutParams param4 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
-            LinearLayout.LayoutParams param8 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
-            LinearLayout bottom = new LinearLayout(this);
-            param8.weight =1;
-            bottom.setLayoutParams(param8);
-
-            //note 단가
-            TextView unit = new TextView(this);
-            unit.setGravity(CENTER_VERTICAL);
-            unit.setPadding((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()),0,0,0);
-            unit.setText(item_unit_price.get(i));
-            param4.weight=1;
-            unit.setLayoutParams(param4);
-            bottom.addView(unit,param4);
-
-            LinearLayout.LayoutParams param5 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            //note 세로선
-            View line2 = new View(this);
-            line2.setBackgroundColor(getResources().getColor(R.color.grey_200));
-            param5.width= 1;
-            line2.setLayoutParams(param5);
-            bottom.addView(line2,param5);
-
-            LinearLayout.LayoutParams param6 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
-
-            //note 수량
-            TextView count = new TextView(this);
-            count.setGravity(CENTER_VERTICAL);
-            count.setPadding((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()),0,0,0);
-            count.setText(item_count.get(i));
-            param6.weight=1;
-            unit.setLayoutParams(param6);
-            bottom.addView(count,param6);
-
-            LinearLayout.LayoutParams param7 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
-            //note 금액
-            TextView price = new TextView(this);
-            price.setGravity(CENTER);
-            price.setGravity(RIGHT);
-            price.setPadding(0,0,(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()),0);
-            price.setTypeface(null, Typeface.BOLD);
-            price.setTextColor(getResources().getColor(R.color.purple_500));
-            price.setText(item_price.get(i)+"원");
-            param7.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());;
-
-            linear.addView(bottom,param8);
-            items.addView(linear,param);
-            items.addView(price,param7);
-
-
-        }
-    }
 
 
 
