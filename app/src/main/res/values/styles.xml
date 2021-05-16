@@ -40,4 +40,7 @@
         <item name="android:gravity">left|center</item>
     </style>
 
+    <style name="tabHost" parent="AppTheme">
+    </style>
+
 </resources>

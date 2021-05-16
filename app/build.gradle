@@ -40,6 +40,9 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -62,4 +65,7 @@ dependencies {
     //원형 이미지 뷰 추가
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    //Tab 레이아웃
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:27.1.1'
 }

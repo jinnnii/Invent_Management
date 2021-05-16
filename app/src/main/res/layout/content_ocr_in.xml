@@ -28,7 +28,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
+                android:padding="20dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,17 +86,16 @@
                 tools:ignore="OnClick" />
 
             <Button
+                android:id="@+id/ok_btn"
                 android:layout_width="match_parent"
                 android:layout_height="53dp"
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:gravity="center"
-                android:onClick="mOnClose"
                 android:padding="16dp"
                 android:text="확인"
                 android:textColor="@color/purple_700"
-                android:textSize="15sp"
-                tools:ignore="OnClick" />
+                android:textSize="15sp" />
         </LinearLayout>
 
     </LinearLayout>

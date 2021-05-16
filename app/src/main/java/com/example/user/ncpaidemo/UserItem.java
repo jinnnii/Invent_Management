@@ -1,6 +1,8 @@
 package com.example.user.ncpaidemo;
 
-public class UserItem {
+import java.io.Serializable;
+
+public class UserItem implements Serializable {
 
         private String name;
         private String store;

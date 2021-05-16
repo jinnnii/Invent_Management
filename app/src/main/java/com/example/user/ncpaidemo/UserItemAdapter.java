@@ -1,6 +1,7 @@
 package com.example.user.ncpaidemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,34 @@ public class UserItemAdapter extends BaseAdapter{
             price.setText(userItem.getPrice());
             unit_price.setText(userItem.getUnitPrice());
 
+        }
+
+        //note 영수증 상세 입력 리스트
+        if(layout == R.layout.content_ocr_in_list){
+            TextView name = (TextView)convertView.findViewById(R.id.item_name);
+            TextView count = (TextView)convertView.findViewById(R.id.item_count);
+            TextView unit_price = (TextView)convertView.findViewById(R.id.item_unit_price);
+
+            name.setText(userItem.getName());
+            count.setText(userItem.getCount());
+            unit_price.setText(userItem.getUnitPrice());
+
+            convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    data.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+
+            convertView.findViewById(R.id.item_category).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), SelectBaseActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         return convertView;

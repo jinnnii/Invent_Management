@@ -39,6 +39,7 @@
             tools:ignore="Instantiatable" />
         <activity android:name="com.example.user.ncpaidemo.CameraActivity" tools:ignore="Instantiatable" />
         <activity android:name=".GalleryActivity" tools:ignore="Instantiatable" />
+        <activity android:name=".SelectBaseActivity" />
 
 
         <!--팝업 액티비티-->

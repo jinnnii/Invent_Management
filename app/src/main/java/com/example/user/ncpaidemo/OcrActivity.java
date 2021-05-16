@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static android.view.Gravity.CENTER;
@@ -46,6 +48,8 @@ public class OcrActivity extends PopupActivity {
 
     int item_total_count=0;
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +59,18 @@ public class OcrActivity extends PopupActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
         setContentView(R.layout.content_ocr);
 
-        resultOcr();
+        intent = new Intent(getApplicationContext(), OcrInActivity.class);
 
-        Button next = findViewById(R.id.next);
+        findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+        resultOcr();
 
     }
 
@@ -155,20 +168,25 @@ public class OcrActivity extends PopupActivity {
 
     public void setListView() {
 
-            ListView listView = findViewById(R.id.items);
+        ListView listView = findViewById(R.id.items);
 
-            ArrayList<UserItem> list = new ArrayList<>();
+        ArrayList<UserItem> list = new ArrayList<>();
 
-            for(int i=0; i<item_total_count;i++){
 
-                UserItem userItem = new UserItem(item_name.get(i),store_name,item_count.get(i),item_unit_price.get(i),item_price.get(i));
-                list.add(userItem);
-            }
+        for(int i=0; i<item_total_count;i++){
 
-            UserItemAdapter adpater = new UserItemAdapter(this, R.layout.content_ocr_list, list);
-            listView.setAdapter(adpater);
+            UserItem userItem = new UserItem(item_name.get(i),store_name,item_count.get(i),item_unit_price.get(i),item_price.get(i));
+            list.add(userItem);
 
-            setListViewHeightBasedOnChildren(listView);
+        }
+
+        UserItemAdapter adpater = new UserItemAdapter(this, R.layout.content_ocr_list, list);
+        listView.setAdapter(adpater);
+
+        setListViewHeightBasedOnChildren(listView);
+
+        intent.putExtra("userItem",list);
+
 
     }
 
