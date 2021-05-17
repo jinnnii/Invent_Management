@@ -9,7 +9,7 @@ public class BaseInfo {
 
     public String getlCategory() {return lCategory;}
     public String getsCategory() {return sCategory;}
-    public int nDay() {return nDay;}
+    public int getnDay() {return nDay;}
 
     public BaseInfo() { }
 

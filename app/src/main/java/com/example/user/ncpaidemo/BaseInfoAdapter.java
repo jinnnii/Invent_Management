@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.user.ncpaidemo.FirebaseDatabaseHelper.list;
+import static com.example.user.ncpaidemo.SelectBaseActivity.baseIntent;
 
 public class BaseInfoAdapter {
 
 
     private Context mContext;
     private BaseAdapter mBaseAdapter;
-
 
     public void setConfig(RecyclerView recyclerView, Context context, List<BaseInfo> baseInfo, List<String> keys){
 
@@ -54,6 +54,7 @@ public class BaseInfoAdapter {
     class BaseInfoItemView extends RecyclerView.ViewHolder {
         private TextView lCategory;
         private TextView sCategory;
+        private ImageView selected;
 
         private String key;
 
@@ -61,12 +62,13 @@ public class BaseInfoAdapter {
             super(LayoutInflater.from(mContext).
                     inflate(R.layout.content_select_base_list, parent, false));
 
-            //lCategory = (TextView) itemView.findViewById(R.id.base_lCategory);
+            lCategory = (TextView) itemView.findViewById(R.id.base_lCategory);
             sCategory = (TextView) itemView.findViewById(R.id.base_sCategory);
+            selected = itemView.findViewById(R.id.base_select);
         }
 
         public void bind(BaseInfo baseInfo, String key) {
-            //lCategory.setText(baseInfo.getlCategory());
+            lCategory.setText(baseInfo.getlCategory());
             sCategory.setText(baseInfo.getsCategory());
             this.key = key;
         }
@@ -90,6 +92,22 @@ public class BaseInfoAdapter {
         @Override
         public void onBindViewHolder(@NonNull BaseInfoItemView holder, int position) {
             holder.bind(mBaseList.get(position),mKeys.get(position));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ImageView selected = holder.itemView.findViewById(R.id.base_select);
+                    selected.setVisibility(View.VISIBLE);
+
+                    System.out.println(position);
+
+                    baseIntent = new Intent(v.getContext(),OcrInActivity.class);
+                    baseIntent.putExtra("lCategory", mBaseList.get(position).getlCategory());
+                    baseIntent.putExtra("sCategory", mBaseList.get(position).getsCategory());
+                    baseIntent.putExtra("nDay", mBaseList.get(position).getnDay());
+                }
+            });
         }
 
         @Override

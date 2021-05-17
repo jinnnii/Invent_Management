@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TabHost;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,14 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
+import static com.example.user.ncpaidemo.SelfInActivity.REQUEST_CODE_MENU;
 
 public class SelectBaseActivity extends AppCompatActivity {
 
     TabHost tabHost;
 
     private ArrayList<RecyclerView> mRecList = new ArrayList<>();
+    private int parentPosition;
     static final String lStr[] = {"채소","과일","양곡","견과","육류","수산물","양념","조미료","소스","면류","유제품","음료","인스턴트","김치젓갈","반찬"};
     static final int id[] = {R.id.vegetable,R.id.fruit,R.id.grain,R.id.nut,R.id.meat,R.id.sea,R.id.seasoning,R.id.condiment,R.id.sauce,R.id.noodle,R.id.daily,R.id.drink,R.id.instant,R.id.salted,R.id.side};
+    static Intent baseIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,23 @@ public class SelectBaseActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.ok_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                baseIntent.putExtra("pos",parentPosition);
+                setResult(RESULT_OK,baseIntent);
+                finish();
+            }
+        });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+
+        parentPosition = data.getIntExtra("pos",0);
+
+    }
+
 
     void setTabSpec(int id,String name){
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("tabSpec"+id).setIndicator(name);

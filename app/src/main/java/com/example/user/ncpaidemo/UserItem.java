@@ -43,6 +43,24 @@ public class UserItem implements Serializable {
             return img;
         }
 
+
+        public void setBase(String lCategory, String sCategory, int nDay){
+            this.lCategory = lCategory;
+            this.sCategory=sCategory;
+            this.nDay=nDay;
+        }
+
+        public UserItem(){
+            this.name = "";
+            this.store="";
+            this.lCategory="";
+            this.sCategory="";
+            this.unit_price="";
+            this.price="";
+            this.count="";
+            this.nDay=0;
+        }
+
         public UserItem(String name, String lCategory, String sCategory){
             this.name = name;
             this.lCategory = lCategory;
@@ -54,7 +72,18 @@ public class UserItem implements Serializable {
             this.count=count;
             this.unit_price = unit_price;
             this.price = price;
+
+            //this.lCategory="";
+            //this.sCategory="";
+            //this.nDay=0;
         }
+
+        public UserItem(String lCategory, String sCategory, int nDay){
+            this.lCategory = lCategory;
+            this.sCategory = sCategory;
+            this.nDay= nDay;
+        }
+
     }
 
 

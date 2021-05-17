@@ -1,5 +1,6 @@
 package com.example.user.ncpaidemo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +14,11 @@ import android.widget.TextView;
 
 import com.kakao.usermgmt.response.model.User;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+
+import static com.example.user.ncpaidemo.SelfInActivity.REQUEST_CODE_MENU;
 
 public class UserItemAdapter extends BaseAdapter{
 
@@ -106,10 +111,14 @@ public class UserItemAdapter extends BaseAdapter{
             TextView name = (TextView)convertView.findViewById(R.id.item_name);
             TextView count = (TextView)convertView.findViewById(R.id.item_count);
             TextView unit_price = (TextView)convertView.findViewById(R.id.item_unit_price);
+            TextView category = (TextView) convertView.findViewById(R.id.item_category);
+            EditText nDay = (EditText) convertView.findViewById(R.id.item_nDay);
 
             name.setText(userItem.getName());
             count.setText(userItem.getCount());
             unit_price.setText(userItem.getUnitPrice());
+            category.setText(userItem.getsCategory());
+            //nDay.setText(userItem.getnDay());
 
             convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -120,11 +129,15 @@ public class UserItemAdapter extends BaseAdapter{
                 }
             });
 
+
             convertView.findViewById(R.id.item_category).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), SelectBaseActivity.class);
-                    v.getContext().startActivity(intent);
+                    intent.putExtra("pos",position);
+
+                    System.out.println("!!!!!!!!!!!!!!!Position:"+position);
+                    ((Activity) v.getContext()).startActivityForResult(intent,REQUEST_CODE_MENU);
                 }
             });
         }
