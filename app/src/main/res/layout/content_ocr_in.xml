@@ -1,103 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="400dp"
-    android:layout_height="600dp"
-    android:background="@drawable/button_round"
+    android:background="@color/grey_100"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".OcrInActivity">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_weight="1">
 
-
+        <!--상단-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:padding="20dp">
+            android:layout_height="100dp"
+            android:orientation="vertical">
 
-            <!--note 상단-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/purple_700"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:text="품목 추가하기"/>
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal"
+                android:elevation="10dp">
 
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:background="@null"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_arrow_back_24" />
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="카테고리 선택"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/ok_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="right|center"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_check_25"
+                    android:gravity="right"
+                    tools:ignore="VectorDrawableCompat" />
             </LinearLayout>
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <ListView
-                        android:id="@+id/in_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:divider="@color/white"/>
-
-                </LinearLayout>
-            </ScrollView>
-
-
 
         </LinearLayout>
 
-        <!--note 닫기-->
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints"
-            android:layout_margin="10dp">
-
-            <Button
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="53dp"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:gravity="center"
-                android:onClick="mOnClose"
-                android:padding="16dp"
-                android:text="취소"
-                android:textColor="@color/purple_700"
-                android:textSize="15sp"
-                tools:ignore="OnClick" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/ok_btn"
+            <ListView
+                android:id="@+id/in_group"
                 android:layout_width="match_parent"
-                android:layout_height="53dp"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="확인"
-                android:textColor="@color/purple_700"
-                android:textSize="15sp" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:divider="@null"/>
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

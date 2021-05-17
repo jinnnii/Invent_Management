@@ -18,9 +18,6 @@ public class FirebaseDatabaseHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRefenceBases;
     private ArrayList<DatabaseReference> mRefList = new ArrayList<>();
-    static ArrayList<Integer> countList = new ArrayList<>();
-    static ArrayList<List<BaseInfo>> list = new ArrayList<>();
-    static int[] id = {R.id.vegetable,R.id.fruit,R.id.grain,R.id.nut,R.id.meat,R.id.sea,R.id.seasoning,R.id.condiment,R.id.sauce,R.id.noodle,R.id.daily,R.id.drink,R.id.instant,R.id.salted,R.id.side};
 
     public interface DataStatus{
         void DataIsLoaded(List<BaseInfo> baseInfos, List<String> keys, int id);
@@ -54,8 +51,10 @@ public class FirebaseDatabaseHelper {
                         for (DataSnapshot keyNode : snapshot.getChildren()) {
                             keys.add(keyNode.getKey());
                             BaseInfo baseInfo = keyNode.getValue(BaseInfo.class);
+                            baseInfo.setlCategory(lStr[finalI]);
                             bases.add(baseInfo);
                         }
+
 
                         dataStatus.DataIsLoaded(bases, keys, finalI);
                     }

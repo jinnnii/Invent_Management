@@ -14,7 +14,9 @@
         android:layout_height="180dp"
         android:orientation="vertical"
         android:background="@drawable/popup_round"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:layout_margin="20dp"
+        android:elevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,20 +24,6 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1.1"
             android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/item_category"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:text="카테고리   "
-                android:textColor="@color/grey_500"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:drawableEnd="@drawable/spinner_ic_left" />
 
             <View
                 android:layout_width="match_parent"
@@ -45,7 +33,7 @@
             <ImageButton
                 android:id="@+id/delete"
                 android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_height="11dp"
 
                 android:layout_gravity="right|center"
                 android:layout_margin="10dp"
@@ -55,6 +43,10 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
         <EditText
             android:background="@null"
             android:id="@+id/item_name"
@@ -66,6 +58,22 @@
             android:textSize="16sp"
             android:textColor="@color/purple_700"
             android:text="품목" />
+
+            <Button
+                android:id="@+id/item_category"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="카테고리   "
+                android:textColor="@color/grey_500"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:drawableEnd="@drawable/spinner_ic_left" />
+
+        </LinearLayout>
 
         <View style="@style/Line_width" />
 
@@ -187,13 +195,13 @@
 
                 <Spinner
                     android:id="@+id/spinner"
-                    android:background="@null"
-                    android:theme="@style/spinner"
-                    android:spinnerMode="dialog"
-                    android:entries="@array/unit"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:entries="@array/unit"
+                    android:spinnerMode="dialog"
+                    android:theme="@style/spinner" />
 
 
             </LinearLayout>

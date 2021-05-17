@@ -18,4 +18,8 @@ public class BaseInfo {
         this.sCategory = sCategory;
         this.nDay=nDay;
     }
+
+    public void setlCategory(String lCategory) {
+        this.lCategory = lCategory;
+    }
 }

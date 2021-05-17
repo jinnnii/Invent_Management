@@ -3,18 +3,16 @@ package com.example.user.ncpaidemo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.kakao.usermgmt.response.model.User;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -52,7 +50,7 @@ public class UserItemAdapter extends BaseAdapter{
         if (convertView == null) {
             convertView = inflater.inflate(layout, parent, false);
         }
-        UserItem userItem = data.get(position);
+        UserItem userItem =  data.get(position);
 
 
         //note 추가할 사용자 원재료 리스트
@@ -100,7 +98,7 @@ public class UserItemAdapter extends BaseAdapter{
             TextView price =(TextView)convertView.findViewById(R.id.item_price);
 
             name.setText(userItem.getName());
-            count.setText(userItem.getCount());
+            count.setText(""+userItem.getCount());
             price.setText(userItem.getPrice());
             unit_price.setText(userItem.getUnitPrice());
 
@@ -108,17 +106,18 @@ public class UserItemAdapter extends BaseAdapter{
 
         //note 영수증 상세 입력 리스트
         if(layout == R.layout.content_ocr_in_list){
-            TextView name = (TextView)convertView.findViewById(R.id.item_name);
-            TextView count = (TextView)convertView.findViewById(R.id.item_count);
-            TextView unit_price = (TextView)convertView.findViewById(R.id.item_unit_price);
+
+            EditText name = (EditText) convertView.findViewById(R.id.item_name);
+            EditText count = (EditText) convertView.findViewById(R.id.item_count);
+            EditText unit_price = (EditText) convertView.findViewById(R.id.item_unit_price);
+            EditText amount = (EditText) convertView.findViewById(R.id.item_amount);
             TextView category = (TextView) convertView.findViewById(R.id.item_category);
-            EditText nDay = (EditText) convertView.findViewById(R.id.item_nDay);
+            TextView nDay = (EditText) convertView.findViewById(R.id.item_nDay);
+            Spinner unit = (Spinner) convertView.findViewById(R.id.spinner);
 
             name.setText(userItem.getName());
-            count.setText(userItem.getCount());
+            count.setText(""+userItem.getCount());
             unit_price.setText(userItem.getUnitPrice());
-            category.setText(userItem.getsCategory());
-            //nDay.setText(userItem.getnDay());
 
             convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,10 +135,90 @@ public class UserItemAdapter extends BaseAdapter{
                     Intent intent = new Intent(v.getContext(), SelectBaseActivity.class);
                     intent.putExtra("pos",position);
 
-                    System.out.println("!!!!!!!!!!!!!!!Position:"+position);
                     ((Activity) v.getContext()).startActivityForResult(intent,REQUEST_CODE_MENU);
                 }
             });
+
+            if(userItem.getnDay()!=0){
+                nDay.setText(""+userItem.getnDay());
+                category.setText(userItem.getsCategory()+"("+userItem.getlCategory()+")");
+            }
+
+
+
+            //note Spinner
+            unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View arg1, int position, long id) {
+                    String str= (String)unit.getSelectedItem();
+                    userItem.setUnit(str);
+                    userItem.print();
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) { }
+            });
+
+
+            //note Edit뷰!
+            name.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String str = name.getText().toString();
+                    userItem.setName(str);
+                    userItem.print();
+
+                }
+                @Override public void beforeTextChanged(CharSequence s, int start,int count, int after) { }
+                @Override public void afterTextChanged(Editable s) { }});
+
+
+            unit_price.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String str = unit_price.getText().toString();
+                    userItem.setUnit_price(str);
+                }
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override public void afterTextChanged(Editable s) { }});
+
+
+            count.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int c) {
+                    int str = Integer.parseInt(count.getText().toString());
+                    userItem.setCount(str);
+                    userItem.print();
+                }
+
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override public void afterTextChanged(Editable s) { }});
+
+
+            nDay.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    int str = Integer.parseInt(nDay.getText().toString());
+                    userItem.setnDay(str);
+                    userItem.print();
+                }
+
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override public void afterTextChanged(Editable s) { }});
+
+
+            amount.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    int str = Integer.parseInt(amount.getText().toString());
+                    userItem.setAmount(str);
+                    userItem.print();
+                }
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                @Override public void afterTextChanged(Editable s) { }});
         }
 
         return convertView;

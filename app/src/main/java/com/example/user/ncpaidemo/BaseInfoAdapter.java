@@ -5,24 +5,15 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kakao.usermgmt.response.model.User;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.ncpaidemo.FirebaseDatabaseHelper.list;
 import static com.example.user.ncpaidemo.SelectBaseActivity.baseIntent;
 
 public class BaseInfoAdapter {
@@ -38,15 +29,6 @@ public class BaseInfoAdapter {
         mBaseAdapter = new BaseAdapter(baseInfo, keys);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mBaseAdapter);
-        int sum=0;
-
-        for(int i =0; i<list.size(); i++){
-            for(int j=0; j<list.get(i).size(); j++) {
-                System.out.println("i는"+i+"j는"+j+list.get(i).get(j).getsCategory()+"\n");
-            }
-                sum +=list.get(i).size();
-        }
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%"+sum);
 
 
     }
@@ -64,7 +46,7 @@ public class BaseInfoAdapter {
 
             lCategory = (TextView) itemView.findViewById(R.id.base_lCategory);
             sCategory = (TextView) itemView.findViewById(R.id.base_sCategory);
-            selected = itemView.findViewById(R.id.base_select);
+            selected =  itemView.findViewById(R.id.base_select);
         }
 
         public void bind(BaseInfo baseInfo, String key) {
@@ -108,6 +90,7 @@ public class BaseInfoAdapter {
                     baseIntent.putExtra("nDay", mBaseList.get(position).getnDay());
                 }
             });
+
         }
 
         @Override

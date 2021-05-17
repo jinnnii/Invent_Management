@@ -3,29 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.user.ncpaidemo">
 
-    <uses-permission android:name = "android.permission.CAMERA"/> <!--카메라 권환 허용-->
-    <uses-permission android:name="android.permission.INTERNET" /> <!--인터넷-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!--읽기 및 쓰기 권한 허용-->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 카메라 권환 허용 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 읽기 및 쓰기 권한 허용 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-
 
     <application
         android:name=".Login"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
-
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
-
         tools:targetApi="n">
+        <activity android:name=".NewUserItemActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,40 +29,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
-       <!-- <activity android:name=".MainActivity"/>-->
-        <activity android:name="com.example.user.ncpaidemo.AuthActivity"
+        <activity android:name=".LoginActivity" /> <!-- <activity android:name=".MainActivity"/> -->
+        <activity
+            android:name=".AuthActivity"
             tools:ignore="Instantiatable" />
-        <activity android:name="com.example.user.ncpaidemo.CameraActivity" tools:ignore="Instantiatable" />
-        <activity android:name=".GalleryActivity" tools:ignore="Instantiatable" />
+        <activity
+            android:name=".CameraActivity"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".GalleryActivity"
+            tools:ignore="Instantiatable" />
         <activity android:name=".SelectBaseActivity" />
-
-
-        <!--팝업 액티비티-->
-        <activity android:name=".AddImageMenu" android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".OcrActivity" android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".SelfInActivity" android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".SelectInActivity" android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".OcrInActivity" android:theme="@android:style/Theme.Dialog" />
-
-        <!--카메라-->
+        <activity android:name=".OcrInActivity" /> <!-- 팝업 액티비티 -->
+        <activity
+            android:name=".AddImageMenu"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".OcrActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".SelfInActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".SelectInActivity"
+            android:theme="@android:style/Theme.Dialog" /> <!-- 카메라 -->
         <provider
-            android:authorities="com.example.user.ncpaidemo"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.user.ncpaidemo"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-
-        </provider>
-
-        <!--카카오톡-->
+        </provider> <!-- 카카오톡 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="ff1cb247a9180cfb1763349f6e99b59f" />
-
     </application>
 
 </manifest>

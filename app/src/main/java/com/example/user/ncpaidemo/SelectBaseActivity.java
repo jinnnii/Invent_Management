@@ -44,6 +44,9 @@ public class SelectBaseActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
         setContentView(R.layout.content_select_base);
 
+        Intent intent = getIntent();
+        parentPosition = intent.getIntExtra("pos",0);
+
         tabHost = findViewById(R.id.tabHost);
         tabHost.setup();
 
@@ -88,13 +91,6 @@ public class SelectBaseActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-
-        parentPosition = data.getIntExtra("pos",0);
-
     }
 
 
