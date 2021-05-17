@@ -7,18 +7,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.kakao.usermgmt.response.model.User;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
 import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
 import static com.example.user.ncpaidemo.SelfInActivity.REQUEST_CODE_MENU;
 
-public class OcrInActivity extends PopupActivity  {
+public class OcrInActivity extends AppCompatActivity {
+
     private ArrayList<UserItem> list = new ArrayList<>();
 
 
@@ -43,6 +49,35 @@ public class OcrInActivity extends PopupActivity  {
 
         setListViewHeightBasedOnChildren(listView);
 
+        findViewById(R.id.ok_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new FirebaseUserHelper().addUserItem(list, new FirebaseUserHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<UserItem> userItems, List<String> keys) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+                        Toast.makeText(OcrInActivity.this,"성공!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -58,18 +93,18 @@ public class OcrInActivity extends PopupActivity  {
                 String lCategory = data.getStringExtra("lCategory");
                 String sCategory = data.getStringExtra("sCategory");
 
-                System.out.println(nDay);
-                System.out.println(pos);
-                System.out.println(lCategory);
-                System.out.println(sCategory);
-
-
                 list.get(pos).setBase(lCategory,sCategory,nDay);
 
                 UserItemAdapter adapter = new UserItemAdapter(this, R.layout.content_ocr_in_list, list);
                 listView.setAdapter(adapter);
 
                 setListViewHeightBasedOnChildren(listView);
+
+                System.out.println("@@@@@@position : "+pos);
+
+                for(int i=0; i<list.size(); i++){
+                    list.get(i).print();
+                }
 
             }
         }
