@@ -28,9 +28,7 @@ import java.io.OutputStream;
 
 
 
-public class GalleryActivity extends AppCompatActivity {
-    //n  이미지 경로
-    public static String image_path = null;
+public class GalleryActivity extends MainActivity {
 
     ImageView imageView;
 

@@ -5,14 +5,19 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,20 +29,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
 
 public class UserItemAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
-    private ArrayList<UserItem> data; //Item 목록을 담을 배열
-    static String unitStr[] = {"g","kg","mL","L"};
+    public ArrayList<UserItem> data; //Item 목록을 담을 배열
+
+    private ArrayList<UserItem> filteredItemList;
+
+    static ArrayList<UserItem> editTextList; //수정한 EditText 배열
+    static String unitStr[] = {"g", "kg", "mL", "L"};
     private int layout;
 
     public UserItemAdapter(Context context, int layout, ArrayList<UserItem> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = data;
         this.layout = layout;
+        this.filteredItemList = data;
     }
 
     @Override
@@ -55,12 +66,40 @@ public class UserItemAdapter extends BaseAdapter {
         return position;
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "CutPasteId", "WrongViewCast"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(layout, parent, false);
+
+
+        final ViewHolder holder;
+
+        if (layout == R.layout.content_ocr_in_list) {
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(layout, parent, false);
+                holder.name = (EditText) convertView.findViewById(R.id.item_name);
+                holder.count = (EditText) convertView.findViewById(R.id.item_count);
+                holder.unit_price = (EditText) convertView.findViewById(R.id.item_unit_price);
+                holder.unit_amount = (EditText) convertView.findViewById(R.id.item_unit_amount);
+                holder.nDay = (EditText) convertView.findViewById(R.id.item_nDay);
+                holder.unit = (Spinner) convertView.findViewById(R.id.spinner);
+                holder.lCategory = (Spinner) convertView.findViewById(R.id.item_category);
+                holder.sCategory = (EditText) convertView.findViewById(R.id.item_sCategory);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.ref = position;
+
+        } else {
+            if (convertView == null) {
+                convertView = inflater.inflate(layout, parent, false);
+
+            }
+            holder = null;
         }
+
+
         UserItem userItem = data.get(position);
 
 
@@ -128,19 +167,42 @@ public class UserItemAdapter extends BaseAdapter {
             EditText count = (EditText) convertView.findViewById(R.id.item_count);
             EditText unit_price = (EditText) convertView.findViewById(R.id.item_unit_price);
             EditText unit_amount = (EditText) convertView.findViewById(R.id.item_unit_amount);
+            EditText sCategory = (EditText) convertView.findViewById(R.id.item_sCategory);
             TextView nDay = (EditText) convertView.findViewById(R.id.item_nDay);
+            ImageButton delete = (ImageButton) convertView.findViewById(R.id.delete);
             Spinner unit = (Spinner) convertView.findViewById(R.id.spinner);
             Spinner category = (Spinner) convertView.findViewById(R.id.item_category);
 
-            name.setText(userItem.getName());
-            count.setText("" + userItem.getCount());
-            unit_price.setText(userItem.getUnit_price());
 
-            convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+            holder.unit_amount.setText("" + userItem.getUnit_amount());
+            holder.nDay.setText("" + userItem.getnDay());
+            holder.name.setText(userItem.getName());
+            holder.count.setText("" + userItem.getCount());
+            holder.unit_price.setText(userItem.getUnit_price());
+            holder.sCategory.setText(userItem.getsCategory());
+            holder.unit.setSelection(getStrPosition(userItem.getUnit(), unitStr));
+            holder.lCategory.setSelection(getStrPosition(userItem.getlCategory(), lStr));
+
+
+            //name.setText(userItem.getName());
+            //count.setText("" + userItem.getCount());
+            //unit_price.setText(userItem.getUnit_price());
+
+            delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    data.remove(position);
+                    System.out.println("######  삭제된 리스트  : " + position + " | " + data.get(position).getName());
+                    System.out.print("######  이전 리스트  : ");
+                    for (int i = 0; i < data.size(); i++) {
+                        System.out.print(data.get(i).getName() + " | ");
+                    }
+                    System.out.println("\n");
+                    data.remove(userItem);
+                    System.out.print("######  이후 리스트  : ");
+                    for (int i = 0; i < data.size(); i++) {
+                        System.out.print(data.get(i).getName() + " | ");
+                    }
+                    System.out.println("\n");
                     notifyDataSetChanged();
                 }
             });
@@ -155,14 +217,14 @@ public class UserItemAdapter extends BaseAdapter {
                             userItem.setUnit(userItems.get(i).getUnit());                   //단위
                             userItem.setlCategory(userItems.get(i).getlCategory());         //대분류
                             userItem.setsCategory(userItems.get(i).getsCategory());         //소분류
-                            System.out.println("################ocr 리스트와 userItem 조회 ##################"+getStrPosition(userItems.get(i).getlCategory(),lStr));
-                            userItems.get(i).print();
-                            userItem.print();
+                            System.out.println("################ocr 리스트와 userItem 조회 ##################" + getStrPosition(userItems.get(i).getlCategory(), lStr));
+                            //userItems.get(i).print();
+                            //userItem.print();
 
-                            nDay.setText(""+userItems.get(i).getnDay());
-                            unit_amount.setText(""+userItems.get(i).getUnit_amount());
-                            category.setSelection(getStrPosition(userItems.get(i).getlCategory(),lStr));
-                            unit.setSelection(getStrPosition(userItems.get(i).getUnit(),unitStr));
+                            nDay.setText("" + userItems.get(i).getnDay());
+                            unit_amount.setText("" + userItems.get(i).getUnit_amount());
+                            category.setSelection(getStrPosition(userItems.get(i).getlCategory(), lStr));
+                            unit.setSelection(getStrPosition(userItems.get(i).getUnit(), unitStr));
 
                             break;
 
@@ -187,10 +249,10 @@ public class UserItemAdapter extends BaseAdapter {
 
             //note Spinner
 
-            category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            holder.lCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View arg1, int position, long id) {
-                    String str = (String) category.getSelectedItem();
+                    String str = (String) holder.lCategory.getSelectedItem();
 
                     AssetManager assetManager = arg1.getResources().getAssets();
 
@@ -214,24 +276,46 @@ public class UserItemAdapter extends BaseAdapter {
                             list.add(jsonArray.getJSONObject(i).getString("sCategory"));
 
                         }
+                        int max = 0;
+                        int count = 0;
+                        int index = -1;
                         for (int i = 0; i < list.size(); i++) {
                             if (userItem.getName().contains(list.get(i))) {
-                                userItem.setsCategory(jsonArray.getJSONObject(i).getString("sCategory"));
-                                userItem.setnDay(jsonArray.getJSONObject(i).getInt("nDay"));
-                                nDay.setText("" + userItem.getnDay());
-                                break;
-                            } else {
-                                userItem.setnDay(-1);
-                                nDay.setText("-1");
+                                if (count == 0) {
+                                    max = list.get(i).length();
+                                    index = i;
+                                    count++;
+                                } else if (max < list.get(i).length()) {
+                                    max = list.get(i).length();
+                                    index = i;
+                                }
+
                             }
                         }
+                        if (index == -1) {
+                            //filteredItemList.get(holder.ref).setnDay(-1);
+                            //userItem.setnDay(-1);
+                            //holder.nDay.setHint("유통기한");
+                        } else {
+                            filteredItemList.get(holder.ref).setsCategory(jsonArray.getJSONObject(index).getString("sCategory"));
+                            filteredItemList.get(holder.ref).setnDay(jsonArray.getJSONObject(index).getInt("nDay"));
+                            //userItem.setsCategory(jsonArray.getJSONObject(index).getString("sCategory"));
+                            //userItem.setnDay(jsonArray.getJSONObject(index).getInt("nDay"));
+                            //sCategory.setFocusable(false);
+                            //sCategory.setClickable(false);
+                            //holder.sCategory.setText(filteredItemList.get(holder.ref).getsCategory());
+                            //holder.nDay.setText("" + filteredItemList.get(holder.ref).getnDay());
 
-                        userItem.setlCategory(str);
+                        }
+                        filteredItemList.get(holder.ref).setlCategory(str);
+
+                        //userItem.setlCategory(str);
+
+                        notifyDataSetChanged();
 
 
-                    } catch (IOException | JSONException e) { }
-
-                    userItem.print();
+                    } catch (IOException | JSONException e) {
+                    }
                 }
 
                 @Override
@@ -239,12 +323,13 @@ public class UserItemAdapter extends BaseAdapter {
                 }
             });
 
-            unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            holder.unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View arg1, int position, long id) {
                     String str = (String) unit.getSelectedItem();
 
-                    userItem.setUnit(str);
+                    filteredItemList.get(holder.ref).setUnit(str);
+                    //userItem.setUnit(str);
                 }
 
                 @Override
@@ -254,14 +339,11 @@ public class UserItemAdapter extends BaseAdapter {
 
 
             //note Edit뷰!
-            name.addTextChangedListener(new TextWatcher() {
+
+            holder.name.addTextChangedListener(new TextWatcher() {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String str = name.getText().toString();
-                    userItem.setName(str);
-                    userItem.print();
-
                 }
 
                 @Override
@@ -270,15 +352,16 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    filteredItemList.get(holder.ref).setName(s.toString());
                 }
             });
 
 
-            unit_price.addTextChangedListener(new TextWatcher() {
+            holder.unit_price.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String str = unit_price.getText().toString();
-                    userItem.setUnit_price(str);
+                    //String str = unit_price.getText().toString();
+                    //userItem.setUnit_price(str);
                 }
 
                 @Override
@@ -287,21 +370,15 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    filteredItemList.get(holder.ref).setUnit_price(s.toString());
                 }
             });
 
 
-            count.addTextChangedListener(new TextWatcher() {
+            holder.count.addTextChangedListener(new TextWatcher() {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int c) {
-                    if (isStringDouble(count.getText().toString()) == false) {
-                        userItem.setCount(-1);
-                    } else {
-                        int str = Integer.parseInt(count.getText().toString());
-                        userItem.setCount(str);
-                        userItem.print();
-                    }
                 }
 
                 @Override
@@ -310,21 +387,22 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+
+                    if (!isStringDouble(count.getText().toString())) {
+                        filteredItemList.get(holder.ref).setCount(-1);
+                    } else {
+                        int str = Integer.parseInt(s.toString());
+                        filteredItemList.get(holder.ref).setCount(str);
+                        //userItem.print(":::: count :::::");
+                    }
                 }
             });
 
 
-            nDay.addTextChangedListener(new TextWatcher() {
+            holder.nDay.addTextChangedListener(new TextWatcher() {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (isStringDouble(nDay.getText().toString()) == false) {
-                        userItem.setnDay(-1);
-                    } else {
-                        int str = Integer.parseInt(nDay.getText().toString());
-                        userItem.setnDay(str);
-                    }
-                    userItem.print();
                 }
 
                 @Override
@@ -333,21 +411,21 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (!isStringDouble(s.toString())) {
+                        filteredItemList.get(holder.ref).setnDay(-1);
+                    } else {
+                        int str = Integer.parseInt(s.toString());
+                        filteredItemList.get(holder.ref).setnDay(str);
+                    }
                 }
             });
 
 
-            unit_amount.addTextChangedListener(new TextWatcher() {
+            holder.unit_amount.addTextChangedListener(new TextWatcher() {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (isStringDouble(unit_amount.getText().toString()) == false) {
-                        userItem.setUnit_amount(-1);
-                    } else {
-                        int str = Integer.parseInt(unit_amount.getText().toString());
-                        userItem.setUnit_amount(str);
-                        userItem.print();
-                    }
+
                 }
 
                 @Override
@@ -356,8 +434,31 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (!isStringDouble(s.toString())) {
+                        filteredItemList.get(holder.ref).setUnit_amount(-1);
+                    } else {
+                        int str = Integer.parseInt(s.toString());
+                        filteredItemList.get(holder.ref).setUnit_amount(str);
+                    }
                 }
             });
+            if (sCategory.isClickable()) {
+                holder.sCategory.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        filteredItemList.get(holder.ref).setsCategory(s.toString());
+                    }
+                });
+            }
         }
 
         return convertView;
@@ -373,12 +474,14 @@ public class UserItemAdapter extends BaseAdapter {
         }
     }
 
-    public int getStrPosition(String str, String[] strArray){
+    public int getStrPosition(String str, String[] strArray) {
         int pos = 0;
-        for(int i =0; i<strArray.length;i++){
-            if(strArray[i].equals(str)){
-                pos=i+1;
-                break;
+        if (str==null||str.equals("▼")) {
+            return pos;
+        }
+        for (int i = 0; i < strArray.length; i++) {
+            if (strArray[i].equals(str)) {
+                pos = i + 1;
             }
         }
         return pos;

@@ -2,15 +2,14 @@ package com.ncp.ai.demo.process;
 
 
 import android.os.Build;
-import android.os.Environment;
+
 import androidx.annotation.RequiresApi;
-import android.widget.ImageView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -18,10 +17,8 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.UUID;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import static com.example.user.ncpaidemo.MainActivity.image_path;
 
-import static com.example.user.ncpaidemo.GalleryActivity.image_path;
 
 public class OcrProc {
 
@@ -34,7 +31,7 @@ public class OcrProc {
 
         try {
             URL url = new URL(apiURL);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setUseCaches(false);
             con.setDoInput(true);
             con.setDoOutput(true);
@@ -52,13 +49,13 @@ public class OcrProc {
             image.put("url", "https://kr.object.ncloudstorage.com/fresh-img/KakaoTalk_20210424_225347928.jpg");*/
 
             FileInputStream inputStream = new FileInputStream(image_path);
-            image_path=null;
+            image_path = null;
             byte[] buffer = new byte[inputStream.available()];
 
-            inputStream.read(buffer,0,buffer.length);
+            inputStream.read(buffer, 0, buffer.length);
             inputStream.close();
             String imgStr = Base64.getEncoder().encodeToString(buffer);
-            
+
             image.put("data", imgStr);
             image.put("name", "demo");
             JSONArray images = new JSONArray();
@@ -91,12 +88,12 @@ public class OcrProc {
             } else {
                 ocrMessage = con.getResponseMessage();
             }
-            System.out.println("@@"+responseCode);
+            System.out.println("@@" + responseCode);
             //br.close();
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println(">>>>>>>>>>"+ ocrMessage);
+        System.out.println(">>>>>>>>>>" + ocrMessage);
 
         return ocrMessage;
     }

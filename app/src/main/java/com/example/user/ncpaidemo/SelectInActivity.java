@@ -39,7 +39,7 @@ import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
 import static android.view.Gravity.RIGHT;
 
-public class SelectInActivity extends PopupActivity {
+public class SelectInActivity extends MainActivity {
 
     private int item_position;
     Intent intent;
@@ -65,6 +65,7 @@ public class SelectInActivity extends PopupActivity {
                     Toast.makeText(getApplicationContext(),"선택하세요",Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    System.out.println("################## : "+intent.getExtras());
                     setResult(RESULT_OK, intent);
                     finish();
                 }
@@ -87,7 +88,7 @@ public class SelectInActivity extends PopupActivity {
 
         for(int i=0; i<10;i++){
 
-            UserItem userItem = new UserItem("(특대)딸기","과일", "딸기");
+            UserItem userItem = new UserItem("(특대)딸기","과일", "딸기",2);
 
             list.add(userItem);
         }
@@ -105,33 +106,8 @@ public class SelectInActivity extends PopupActivity {
                 intent.putExtra("name", list.get(position).getName());
                 intent.putExtra("lCategory", list.get(position).getlCategory());
                 intent.putExtra("sCategory", list.get(position).getsCategory());
+                intent.putExtra("nDay",list.get(position).getnDay());
             }
         });
-    }
-
-
-    //note 리스트뷰 자동 높이 조절
-   public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int totalHeight = 0;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            //listItem.measure(0, 0);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-
-        params.height = totalHeight;
-        listView.setLayoutParams(params);
-
-        listView.requestLayout();
     }
 }

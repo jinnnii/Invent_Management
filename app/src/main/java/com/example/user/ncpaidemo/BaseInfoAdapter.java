@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.user.ncpaidemo.SelectBaseActivity.baseIntent;
@@ -82,12 +83,15 @@ public class BaseInfoAdapter {
                     ImageView selected = holder.itemView.findViewById(R.id.base_select);
                     selected.setVisibility(View.VISIBLE);
 
-                    System.out.println(position);
 
                     baseIntent = new Intent(v.getContext(),OcrInActivity.class);
                     baseIntent.putExtra("lCategory", mBaseList.get(position).getlCategory());
                     baseIntent.putExtra("sCategory", mBaseList.get(position).getsCategory());
                     baseIntent.putExtra("nDay", mBaseList.get(position).getnDay());
+
+                    for(int i=0 ; i<mBaseList.size(); i++){
+                        mBaseList.get(i).print();
+                    }
                 }
             });
 

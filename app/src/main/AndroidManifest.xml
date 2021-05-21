@@ -40,19 +40,22 @@
             android:name=".GalleryActivity"
             tools:ignore="Instantiatable" />
         <activity android:name=".SelectBaseActivity" />
-        <activity android:name=".OcrInActivity" /> <!-- 팝업 액티비티 -->
+        <activity android:name=".OcrInActivity" />
+        <activity android:name=".SelfInActivity" />
+
+        <!-- 팝업 액티비티 -->
         <activity
-            android:name=".AddImageMenu"
+            android:name=".AddImageTypeMenu"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".OcrActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".SelfInActivity"
-            android:theme="@android:style/Theme.Dialog" />
-        <activity
             android:name=".SelectInActivity"
-            android:theme="@android:style/Theme.Dialog" /> <!-- 카메라 -->
+            android:theme="@android:style/Theme.Dialog" />
+
+
+        <!-- 카메라 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.user.ncpaidemo"

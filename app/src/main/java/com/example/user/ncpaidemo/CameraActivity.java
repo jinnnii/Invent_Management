@@ -37,9 +37,7 @@ import java.util.Locale;
 
 import static android.os.Environment.DIRECTORY_PICTURES;
 
-public class CameraActivity extends AppCompatActivity{
-    //n  이미지 경로
-    public static String image_path = null;
+public class CameraActivity extends MainActivity{
 
     protected static final int REQUEST_IMAGE_CAPTURE = 672;
     protected String imageFilePath; //임시 파일 경로

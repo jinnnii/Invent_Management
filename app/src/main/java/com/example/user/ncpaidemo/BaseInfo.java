@@ -22,4 +22,12 @@ public class BaseInfo {
     public void setlCategory(String lCategory) {
         this.lCategory = lCategory;
     }
+
+    public void print(){
+        System.out.println("--------------------------------------");
+        System.out.println("########  lCategory : " +lCategory);
+        System.out.println("########  sCategory : " +sCategory);
+        System.out.println("########  nDay : " +nDay);
+        System.out.println("--------------------------------------");
+    }
 }

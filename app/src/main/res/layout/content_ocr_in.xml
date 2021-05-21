@@ -14,6 +14,7 @@
         android:layout_weight="1">
 
         <!--상단-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -48,6 +49,13 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:layout_width="match_parent" />
+
+                <Button
+                    android:id="@+id/buttontest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Button" />
 
                 <ImageButton
                     android:id="@+id/ok_btn"

@@ -7,5 +7,12 @@
     <item>mL</item>
     <item>L</item>
     </string-array>
+
+    <string-array name="lCategory">
+        <item>▼</item>
+        <item>채소</item>
+        <item>과일</item>
+        <item>양곡</item>
+    </string-array>
 </resources>
 

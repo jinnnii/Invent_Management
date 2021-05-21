@@ -6,38 +6,35 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.MessageDigest;
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView; // 바텀 네비게이션 뷰
     private FragmentManager fm;
     private FragmentTransaction ft;
     private Frag1 frag1;
+
+    public static String image_path = null; //이미지 파일 경로
 
 
     @Override
@@ -46,6 +43,45 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.content_main);
 
 
+
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.item_list);
+        new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<UserItem> userItems, List<String> keys) {
+
+                new UserItemRAdapter().setConfigMain(mRecyclerView, MainActivity.this, userItems, keys);
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* ***************************************************************************************************************** */
         //프래그
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
@@ -105,9 +141,34 @@ public class MainActivity extends BaseActivity {
     //버튼 팝업 액티비티
     public void mOnPopupClick(){
         //데이터 담아서 팝업(액티비티) 호출
-        Intent intent = new Intent(this, AddImageMenu.class);
+        Intent intent = new Intent(this, AddImageTypeMenu.class);
         intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
+    }
+
+    //note 리스트뷰 자동 높이 조절
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            //listItem.measure(0, 0);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        params.height = totalHeight;
+        listView.setLayoutParams(params);
+
+        listView.requestLayout();
     }
 }
 

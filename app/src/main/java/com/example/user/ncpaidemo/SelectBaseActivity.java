@@ -86,7 +86,7 @@ public class SelectBaseActivity extends AppCompatActivity {
         findViewById(R.id.ok_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                baseIntent.putExtra("pos",parentPosition);
+                //baseIntent.putExtra("pos",parentPosition);
                 setResult(RESULT_OK,baseIntent);
                 finish();
             }

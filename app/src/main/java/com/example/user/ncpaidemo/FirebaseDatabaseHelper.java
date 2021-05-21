@@ -24,6 +24,7 @@ public class FirebaseDatabaseHelper {
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
+
     }
 
     public FirebaseDatabaseHelper(){
