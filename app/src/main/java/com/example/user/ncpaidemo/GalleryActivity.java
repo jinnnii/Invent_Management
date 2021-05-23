@@ -28,7 +28,7 @@ import java.io.OutputStream;
 
 
 
-public class GalleryActivity extends MainActivity {
+public class GalleryActivity extends BaseActivity {
 
     ImageView imageView;
 
@@ -49,6 +49,7 @@ public class GalleryActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OcrActivity.class);
+                intent.putExtra("inoutFlag",getIntent().getIntExtra("inoutFlag",0));
                 startActivity(intent);
                 finish();
             }

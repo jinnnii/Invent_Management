@@ -2,10 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_plus"
+        android:id="@+id/action_chart"
         android:enabled="true"
-        android:icon="@drawable/ic_plus"
-        android:title="추가"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
+        android:title="@null"
         />
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_home_24"
+        android:title="@null" />
+    <item
+        android:id="@+id/action_menu"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_view_list_24"
+        android:title="@null" />
 
 </menu>

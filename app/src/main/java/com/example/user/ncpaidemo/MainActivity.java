@@ -2,7 +2,6 @@ package com.example.user.ncpaidemo;
 
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Base64;
 import android.util.Log;
@@ -26,13 +24,14 @@ import android.widget.ListView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.security.MessageDigest;
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView; // 바텀 네비게이션 뷰
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private Frag1 frag1;
+    private ChartActivity frag1;
+    private HomeActivity frag2;
+    private RecipeActivity frag3;
 
     public static String image_path = null; //이미지 파일 경로
 
@@ -42,46 +41,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
-
-
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.item_list);
-        new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(List<UserItem> userItems, List<String> keys) {
-
-                new UserItemRAdapter().setConfigMain(mRecyclerView, MainActivity.this, userItems, keys);
-
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
         /* ***************************************************************************************************************** */
+
+
+
         //프래그
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
@@ -91,15 +54,25 @@ public class MainActivity extends BaseActivity {
             {
                 switch (menuItem.getItemId())
                 {
-                    case R.id.action_plus:
+                    case R.id.action_chart:
                         setFrag(0);
+                        break;
+                    case R.id.action_home:
+                        setFrag(1);
+                        break;
+                    case R.id.action_menu:
+                        setFrag(2);
                         break;
                 }
                 return true;
             }
         });
 
-        frag1=new Frag1();
+        frag1=new ChartActivity();
+        frag2=new HomeActivity();
+        frag3=new RecipeActivity();
+
+        setFrag(1);
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
@@ -133,18 +106,25 @@ public class MainActivity extends BaseActivity {
         switch (n)
         {
             case 0:
-                mOnPopupClick();
+                ft.replace(R.id.Main_Frame,frag1);
+                ft.commit();
+                break;
+            case 1:
+                ft.replace(R.id.Main_Frame,frag2);
+                ft.commit();
+                break;
+            case 2:
+                ft.replace(R.id.Main_Frame,frag3);
+                ft.commit();
                 break;
         }
     }
 
     //버튼 팝업 액티비티
-    public void mOnPopupClick(){
-        //데이터 담아서 팝업(액티비티) 호출
-        Intent intent = new Intent(this, AddImageTypeMenu.class);
-        intent.putExtra("data", "Test Popup");
-        startActivityForResult(intent, 1);
-    }
+
+
+
+
 
     //note 리스트뷰 자동 높이 조절
     public static void setListViewHeightBasedOnChildren(ListView listView) {

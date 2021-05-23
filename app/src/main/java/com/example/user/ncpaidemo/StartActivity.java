@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -23,47 +24,63 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSessionCallback = new ISessionCallback() {
-            @Override
-            public void onSessionOpened() {
-                //로그인 요청
-                UserManagement.getInstance().me(new MeV2ResponseCallback() {
-                    @Override
-                    //세션닫기
-                    public void onFailure(ErrorResult errorResult) {
-                        Toast.makeText(StartActivity.this, "로그인 도중 오류사 생겼습니다. 다시 시도하십시오.", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    //세션닫기
-                    public void onSessionClosed(ErrorResult errorResult) {
-                        Toast.makeText(StartActivity.this, "세션이 닫혔습니다. 다시 시도하십시오.", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    //로그인 성공
-                    public void onSuccess(MeV2Response result) {
-                        //성공시 LoginActivity 클래스로 이동
-                        Intent intent = new Intent(StartActivity.this, LoginActivity.class);
-                        intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
-                        intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
-                        intent.putExtra("email", result.getKakaoAccount().getEmail());
-                        startActivity(intent);
-
-                        Toast.makeText(StartActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onSessionOpenFailed(KakaoException exception) {
-                Toast.makeText(StartActivity.this, "onSessionOpenFailed", Toast.LENGTH_SHORT).show();
-            }
-        };
+        mSessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(mSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+    }
 
-        //getAppHashKey();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(mSessionCallback);
+    }
+
+    private class SessionCallback implements ISessionCallback {
+        @Override
+        public void onSessionOpened() {
+            UserManagement.getInstance().me(new MeV2ResponseCallback() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    int result = errorResult.getErrorCode();
+
+                    if(result == ApiErrorCode.CLIENT_ERROR_CODE) {
+                        Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"로그인 도중 오류가 발생했습니다: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+                    Toast.makeText(getApplicationContext(),"세션이 닫혔습니다. 다시 시도해 주세요: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                }
+
+                //로그인 성공
+                public void onSuccess(MeV2Response result) {
+                    //성공시 LoginActivity 클래스로 이동
+                    Intent intent = new Intent(StartActivity.this, LoginActivity.class);
+                    intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
+                    intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
+                    intent.putExtra("email", result.getKakaoAccount().getEmail());
+                    startActivity(intent);
+
+                    Toast.makeText(StartActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public void onSessionOpenFailed(KakaoException e) {
+            Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: "+e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -37,7 +37,7 @@ import java.util.Locale;
 
 import static android.os.Environment.DIRECTORY_PICTURES;
 
-public class CameraActivity extends MainActivity{
+public class CameraActivity extends BaseActivity{
 
     protected static final int REQUEST_IMAGE_CAPTURE = 672;
     protected String imageFilePath; //임시 파일 경로
@@ -84,6 +84,7 @@ public class CameraActivity extends MainActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OcrActivity.class);
+                intent.putExtra("inoutFlag",getIntent().getIntExtra("inputFlag",0));
                 startActivity(intent);
                 finish();
             }

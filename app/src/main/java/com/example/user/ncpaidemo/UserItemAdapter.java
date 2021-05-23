@@ -5,19 +5,15 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +25,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
 
@@ -71,11 +66,11 @@ public class UserItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
-        final ViewHolder holder;
+        final ViewHolder.WideUserItemHolder holder;
 
         if (layout == R.layout.content_ocr_in_list) {
             if (convertView == null) {
-                holder = new ViewHolder();
+                holder = new ViewHolder.WideUserItemHolder();
                 convertView = inflater.inflate(layout, parent, false);
                 holder.name = (EditText) convertView.findViewById(R.id.item_name);
                 holder.count = (EditText) convertView.findViewById(R.id.item_count);
@@ -87,7 +82,7 @@ public class UserItemAdapter extends BaseAdapter {
                 holder.sCategory = (EditText) convertView.findViewById(R.id.item_sCategory);
                 convertView.setTag(holder);
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (ViewHolder.WideUserItemHolder) convertView.getTag();
             }
             holder.ref = position;
 
@@ -155,8 +150,8 @@ public class UserItemAdapter extends BaseAdapter {
 
             name.setText(userItem.getName());
             count.setText("" + userItem.getCount());
-            price.setText(userItem.getPrice());
-            unit_price.setText(userItem.getUnit_price());
+            price.setText(""+userItem.getPrice());
+            unit_price.setText(""+userItem.getUnit_price());
 
         }
 
@@ -178,7 +173,7 @@ public class UserItemAdapter extends BaseAdapter {
             holder.nDay.setText("" + userItem.getnDay());
             holder.name.setText(userItem.getName());
             holder.count.setText("" + userItem.getCount());
-            holder.unit_price.setText(userItem.getUnit_price());
+            holder.unit_price.setText(""+userItem.getUnit_price());
             holder.sCategory.setText(userItem.getsCategory());
             holder.unit.setSelection(getStrPosition(userItem.getUnit(), unitStr));
             holder.lCategory.setSelection(getStrPosition(userItem.getlCategory(), lStr));
@@ -209,7 +204,7 @@ public class UserItemAdapter extends BaseAdapter {
 
             new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
                 @Override
-                public void DataIsLoaded(List<UserItem> userItems, List<String> keys) {
+                public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
                     for (int i = 0; i < userItems.size(); i++) {
                         if (userItem.getName().equals(userItems.get(i).getName())) {
                             userItem.setnDay(userItems.get(i).getnDay());                   //유통기한
@@ -370,7 +365,13 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    filteredItemList.get(holder.ref).setUnit_price(s.toString());
+                    if (!isStringDouble(unit_price.getText().toString())) {
+                        filteredItemList.get(holder.ref).setUnit_price(-1);
+                    } else {
+                        int str = Integer.parseInt(s.toString());
+                        filteredItemList.get(holder.ref).setUnit_price(str);
+                        //userItem.print(":::: count :::::");
+                    }
                 }
             });
 

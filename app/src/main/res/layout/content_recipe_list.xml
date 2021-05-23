@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/baseList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:elevation="10dp"
+                android:background="@drawable/popup_round">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="60dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/recipe_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="레시피명"
+                        android:textColor="@color/purple_700"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/recipe_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="판매가격"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/recipe_unit_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="20dp"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:text="단가"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_height="60dp"
+            android:layout_width="60dp"
+            android:src="@color/purple_700"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"/>
+    </FrameLayout>
+
+</LinearLayout>
+
+

@@ -41,6 +41,8 @@ public class SelfInActivity extends MainActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         //note 타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //note 투명 배경

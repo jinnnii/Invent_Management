@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class LoginActivity extends AppCompatActivity {
     private Button sendInfo;//정보 데이터베이스에 업로드 하는 버튼
 
-    private String strNick, strProfileImg,strEmail;
+    public static String strNick, strProfileImg,strEmail;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         sendInfo.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 // 버튼 누르면 수행 할 명령
-                databaseReference.child("UserInfo").child(strNick).child("식자재목록").child("식자재1").child("수량").setValue(10); //message 이름값 하위에 특정한 규칙을 가진 child를 생성하면서 그 값을 "2"
+                /*databaseReference.child("UserInfo").child(strNick).child("식자재목록").child("식자재1").child("수량").setValue(10); //message 이름값 하위에 특정한 규칙을 가진 child를 생성하면서 그 값을 "2"
                 databaseReference.child("UserInfo").child(strNick).child("식자재목록").child("식자재1").child("유통기한").setValue("2012-10-12");
                 databaseReference.child("UserInfo").child(strNick).child("식자재목록").child("식자재1").child("구매위치").setValue("우리집");
                 databaseReference.child("UserInfo").child(strNick).child("식자재목록").child("식자재1").child("가격").setValue(0);
@@ -63,18 +63,14 @@ public class LoginActivity extends AppCompatActivity {
                 databaseReference.child("UserInfo").child(strNick).child("레시피목록").child("레시피1").child("식자재 이름 받아오기").setValue(5);
                 databaseReference.child("UserInfo").child(strNick).child("레시피목록").child("레시피1").child("쌀").setValue(15);
                 databaseReference.child("UserInfo").child(strNick).child("수입지출").child("5월달").child("수입").setValue(0);
-                databaseReference.child("UserInfo").child(strNick).child("수입지출").child("5월달").child("지출").setValue(100000);
+                databaseReference.child("UserInfo").child(strNick).child("수입지출").child("5월달").child("지출").setValue(100000);*/
                 //databaseReference.child("message").child("gbgg").setValue("2"); //message - gbgg 항목의 값을 "2"로 덮어씌운다는 뜻입니다.
                 //databaseReference.child("userInfo").child(strNick).setValue(strEmail);
                 //databaseReference.child("userInfo").child(strNick).push().setValue("Info2");
 
-                /*Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
-                intent.putExtra("name",strNick);
-                intent.putExtra("profileImg",strProfileImg);
-
-                startActivity(intent);*/
-
+                //테스트한다고 레시피로 옮김 메인 엑티비티로 다시 옮길것
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("name",strNick);
                 startActivity(intent);
             }
         });

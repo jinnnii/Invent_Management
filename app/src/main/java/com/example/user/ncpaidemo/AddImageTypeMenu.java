@@ -46,6 +46,7 @@ public class AddImageTypeMenu extends  PopupActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                intent.putExtra("inoutFlag",inoutFlag);
                 startActivity(intent);
                 finish();
             }
@@ -55,6 +56,7 @@ public class AddImageTypeMenu extends  PopupActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GalleryActivity.class);
+                intent.putExtra("inoutFlag",inoutFlag);
                 startActivity(intent);
                 finish();
             }

@@ -43,8 +43,8 @@ public class OcrActivity extends PopupActivity {
 
     ArrayList<String> item_name = new ArrayList<>();
     ArrayList<String> item_count = new ArrayList<>();
-    ArrayList<String> item_unit_price = new ArrayList<>();
-    ArrayList<String> item_price = new ArrayList<>();
+    ArrayList<Integer> item_unit_price = new ArrayList<>();
+    ArrayList<Integer> item_price = new ArrayList<>();
 
     String total_price;
 
@@ -61,7 +61,10 @@ public class OcrActivity extends PopupActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
         setContentView(R.layout.content_ocr);
 
-        intent = new Intent(getApplicationContext(), OcrInActivity.class);
+        if(getIntent().getIntExtra("inoutFlag",0)==0) {
+            intent = new Intent(getApplicationContext(), OcrInActivity.class);
+        }
+        else intent= new Intent(getApplicationContext(), OcrOutActivity.class);
 
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +147,8 @@ public class OcrActivity extends PopupActivity {
 
                     item_name.add(path.items("item_name", i, j)); //note 항목명
                     item_count.add(path.items("item_count", i, j)); //note 항목 수량
-                    item_unit_price.add(path.items("item_unit_price", i, j)); //note 단가
-                    item_price.add(path.items("item_price", i, j)); //note 금액
+                    item_unit_price.add(Integer.parseInt(path.items("item_unit_price", i, j).replace(",",""))); //note 단가
+                    item_price.add(Integer.parseInt(path.items("item_price", i, j).replace(",",""))); //note 금액
 
                     item_total_count++;
 

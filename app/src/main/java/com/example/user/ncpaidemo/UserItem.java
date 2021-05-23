@@ -13,9 +13,9 @@ public class UserItem implements Serializable {
     private String store;
     private String lCategory;
     private String sCategory;
-    private String unit_price;
-    private String price;
     private String unit;
+    private int unit_price;
+    private int price;
     private int count;
     private int amount;
     private int unit_amount;
@@ -39,11 +39,11 @@ public class UserItem implements Serializable {
         return sCategory;
     }
 
-    public String getUnit_price() {
+    public int getUnit_price() {
         return unit_price;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -81,20 +81,23 @@ public class UserItem implements Serializable {
         this.sCategory = sCategory;
     }
 
-    public void setUnit_price(String unit_price) {
+    public void setUnit_price(int unit_price) {
         this.unit_price = unit_price;
+        //this.price=unit_price*count;
     }
 
     public void setCount(int count) {
         this.count = count;
         this.amount = unit_amount * count;
+
+        //this.price=unit_price*count;
     }
 
     public void setnDay(int nDay) {
         this.nDay = nDay;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -115,8 +118,8 @@ public class UserItem implements Serializable {
         this.store = "";
         this.lCategory = "";
         this.sCategory = "";
-        this.unit_price = "";
-        this.price = "";
+        this.unit_price = 0;
+        this.price = 0;
         this.nDay = 0;
         this.count = 0;
     }
@@ -135,7 +138,7 @@ public class UserItem implements Serializable {
 
     }
 
-    public UserItem(String name, String store, String count, String unit_price, String price) {
+    public UserItem(String name, String store, String count, int unit_price, int price) {
         this.name = name;
         this.store = store;
         this.unit_price = unit_price;

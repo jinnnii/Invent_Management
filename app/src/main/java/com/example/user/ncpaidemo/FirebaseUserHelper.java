@@ -9,11 +9,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
+import static com.example.user.ncpaidemo.LoginActivity.strNick;
 
 public class FirebaseUserHelper {
 
@@ -23,7 +22,7 @@ public class FirebaseUserHelper {
     List<String> keys; // 조회 결과 key List
 
     public interface DataStatus{
-        void DataIsLoaded(List<UserItem> userItems,List<String> keys);
+        void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -31,7 +30,7 @@ public class FirebaseUserHelper {
 
     public FirebaseUserHelper(){
         mDatabase = FirebaseDatabase.getInstance();
-        mRefrenceUsers = mDatabase.getReference("UserInfo").child("김은진").child("식자재목록");
+        mRefrenceUsers = mDatabase.getReference("UserInfo").child(strNick).child("식자재목록");
 
     }
 
@@ -104,7 +103,7 @@ public class FirebaseUserHelper {
         }
 
         public void updateUserItem(String key, UserItem userItem, final DataStatus dataStatus){
-            mRefrenceUsers.child("김은진").child("식자재목록").child(key).setValue(userItem)
+            mRefrenceUsers.child(strNick).child("식자재목록").child(key).setValue(userItem)
                 .addOnSuccessListener(new OnSuccessListener<Void>(){
                     @Override
                     public void onSuccess(Void aVoid) {

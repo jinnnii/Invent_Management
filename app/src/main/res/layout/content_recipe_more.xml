@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMoreActivity">
+    tools:context=".RecipeMoreActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,26 +68,7 @@
             android:orientation="vertical"
             android:background="@color/purple_700"
             android:elevation="10dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="1">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@color/grey_100"/>
-                <TextView
-                    android:id="@+id/item_sCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="18dp"
-                    android:textColor="@color/white"
-                    android:text="소분류명"/>
-            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
@@ -105,10 +86,10 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/purple_200"
-                        android:text="대분류"
+                        android:text="판매가"
                         />
                     <TextView
-                        android:id="@+id/item_lCategory"
+                        android:id="@+id/recipe_price"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -133,10 +114,10 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/purple_200"
-                        android:text="잔여수량"
+                        android:text="메뉴명"
                         />
                     <TextView
-                        android:id="@+id/item_nowAmount"
+                        android:id="@+id/recipe_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -164,16 +145,16 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/purple_200"
-                        android:text="잔여기간"
+                        android:text="단가"
                         />
                     <TextView
-                        android:id="@+id/item_maxDay"
+                        android:id="@+id/recipe_unit_price"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
                         android:text="D-365"/>
 
@@ -197,8 +178,10 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/user_item_list"
+                    <ListView
+                        android:id="@+id/recipe_list"
+                        android:divider="@null"
+                        android:listSelector="@android:color/transparent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </LinearLayout>

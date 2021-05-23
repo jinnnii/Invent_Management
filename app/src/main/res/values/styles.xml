@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">#47C83E</item>
-        <item name="colorPrimaryDark">#22741C</item>
+        <item name="colorPrimaryDark">#5B35F5</item>
         <item name="colorAccent">#FF4081</item>
     </style>
 
