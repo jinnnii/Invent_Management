@@ -74,7 +74,7 @@
                 android:layout_weight="1">
 
             <EditText
-                android:id="@+id/item_unit_price"
+                android:id="@+id/item_price"
                 android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -169,7 +169,7 @@
                 android:layout_weight="1">
 
             <EditText
-                android:id="@+id/item_maxAmount"
+                android:id="@+id/item_unit_amount"
                 android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

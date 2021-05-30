@@ -7,6 +7,7 @@ public class Recipe implements Serializable {
     private String name;
     private int price;
     private int total_unit_price;
+    private int count;
     private ArrayList<RecipeItem> userItems = new ArrayList<>();
 
     public String getName() {
@@ -41,13 +42,35 @@ public class Recipe implements Serializable {
         this.total_unit_price = total_unit_price;
     }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public Recipe() {
     }
 
-    public Recipe(String name, int price, int total_unit_price, ArrayList<RecipeItem> wUserItems) {
+    public Recipe(String name, int price, int total_unit_price, int count, ArrayList<RecipeItem> wUserItems) {
         this.name = name;
         this.price = price;
         this.userItems = wUserItems;
         this.total_unit_price =total_unit_price;
+        this.count=count;
+    }
+
+    public void print() {
+        System.out.print("name : " + name + " | ");
+        System.out.print("price : " + price + " | ");
+        System.out.print("total_unit_price : " + total_unit_price + " | ");
+        System.out.println("count : " + count + " | ");
+        System.out.print("::: 아이템리스트 ::: ");
+        if(userItems!=null) {
+            for (int i = 0; i < userItems.size(); i++) {
+                userItems.get(i).print();
+            }
+        }
     }
 }

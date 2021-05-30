@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.user.ncpaidemo.BaseActivity.inList;
+import static com.example.user.ncpaidemo.BaseActivity.outList;
 import static com.example.user.ncpaidemo.R.color.progress1;
 import static com.example.user.ncpaidemo.R.color.white;
 import static com.example.user.ncpaidemo.SelectBaseActivity.baseIntent;
@@ -31,7 +33,7 @@ import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 
-public class WideUSerItemAdapter {
+public class HomeAdapter{
 
 
     private Context mContext;
@@ -139,11 +141,11 @@ public class WideUSerItemAdapter {
                 sumAmount += amount;
                 sumCount += item.getCount();
                 maxNDay = Math.min(maxNDay, item.getnDay());
-                total_price+=item.getPrice();
+                total_price += item.getPrice();
 
             }
 
-            layout=R.layout.content_recipe_add_item_list;
+            layout = R.layout.content_main_list;
 
             wUserItem.setMaxCount(sumCount);
             wUserItem.setNowAmount(sumAmount);
@@ -151,9 +153,8 @@ public class WideUSerItemAdapter {
             wUserItem.setTotal_price(total_price);
 
             wUserItemList.add(wUserItem);
-            wUserItem.print();
-            System.out.println("========================================================================================================================");
         }
+
 
         mContext = context;
         mUserItemAdapter = new UserItemAdapter(wUserItemList, reKeys);
@@ -181,39 +182,37 @@ public class WideUSerItemAdapter {
         //private TextView amount;
         private CircleProgressBar amount;
         private TextView unit;
+        private com.airbnb.lottie.LottieAnimationView upgrade;
+        private com.airbnb.lottie.LottieAnimationView downgrade;
 
         private String key;
 
-//        @SuppressLint("NonConstantResourceId")
+        //        @SuppressLint("NonConstantResourceId")
         public UserItemView(ViewGroup parent) {
             super(LayoutInflater.from(mContext).
                     inflate(layout, parent, false));
 
-            switch(layout){
-                case R.layout.content_recipe_add_item_list:
-                    lCategory = (TextView) itemView.findViewById(R.id.item_lCategory);
-                    sCategory = (TextView) itemView.findViewById(R.id.item_sCategory);
-                    break;
-                case R.layout.content_recipe_list:
-                    sCategory = (TextView) itemView.findViewById(R.id.item_name);
-                default:
-                    break;
-            }
+            name = (TextView) itemView.findViewById(R.id.item_name);
+            nDay = (TextView) itemView.findViewById(R.id.item_nDay);
+            count = (TextView) itemView.findViewById(R.id.item_count);
+            amount = (CircleProgressBar) itemView.findViewById(R.id.item_amount);
+
+            upgrade = (com.airbnb.lottie.LottieAnimationView)itemView.findViewById(R.id.upgrade);
+            downgrade = (com.airbnb.lottie.LottieAnimationView)itemView.findViewById(R.id.downgrade);
 
 
-                //name = (TextView) itemView.findViewById(R.id.item_name);
-                //store = (TextView) itemView.findViewById(R.id.item_store);
-                //lCategory = (TextView) itemView.findViewById(R.id.base_lCategory);
-                //sCategory = (TextView) itemView.findViewById(R.id.base_sCategory);
-                //nDay = (TextView) itemView.findViewById(R.id.item_nDay);
-                //count = (TextView) itemView.findViewById(R.id.item_count);
-                //unit_price = (TextView) itemView.findViewById(R.id.item_unit_price);
-                //price = (TextView) itemView.findViewById(R.id.item_price);
-                //amount = (CircleProgressBar) itemView.findViewById(R.id.item_amount);
-                //amount = (TextView) itemView.findViewById(R.id.item_amount);
-                //unit = (TextView) itemView.findViewById(R.id.item_unit);
-                //unit =(TextView) itemView.findViewById(R.id.item_unit);
-
+            //name = (TextView) itemView.findViewById(R.id.item_name);
+            //store = (TextView) itemView.findViewById(R.id.item_store);
+            //lCategory = (TextView) itemView.findViewById(R.id.base_lCategory);
+            //sCategory = (TextView) itemView.findViewById(R.id.base_sCategory);
+            //nDay = (TextView) itemView.findViewById(R.id.item_nDay);
+            //count = (TextView) itemView.findViewById(R.id.item_count);
+            //unit_price = (TextView) itemView.findViewById(R.id.item_unit_price);
+            //price = (TextView) itemView.findViewById(R.id.item_price);
+            //amount = (CircleProgressBar) itemView.findViewById(R.id.item_amount);
+            //amount = (TextView) itemView.findViewById(R.id.item_amount);
+            //unit = (TextView) itemView.findViewById(R.id.item_unit);
+            //unit =(TextView) itemView.findViewById(R.id.item_unit);
 
 
         }
@@ -222,14 +221,44 @@ public class WideUSerItemAdapter {
         public void bind(WideUserItem wUserItem) {
 
 
-            if(mContext.getClass()==RecipeFinditemActivity.class){
-                sCategory.setText(wUserItem.getsCategory());
-                lCategory.setText(wUserItem.getlCategory());
+            name.setText(wUserItem.getsCategory());
+            nDay.setText("D-" + wUserItem.getMaxDay());
+
+            String unitStr = null;
+            int amountUnity = wUserItem.getNowAmount();
+
+
+            amount.setMax(20000);
+
+            //if(amountUnity>=1000) amount.setProgress(amountUnity/1000);
+            amount.setProgress(amountUnity);
+
+            if (wUserItem.getUnit().equals("g")) {
+                if (amountUnity >= 1000) unitStr = "kg";
+                else unitStr = "g";
+            } else if (wUserItem.getUnit().equals("mL")) {
+                if (amountUnity >= 1000) unitStr = "L";
+                else unitStr = "mL";
             }
-            else if(mContext.getClass()==RecipeAddActivity.class){
-                sCategory.setText(wUserItem.getsCategory());
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@ RecipeAddAcvitivy!");
+            amount.setProgressFormatter(new MyProgressFormatter(unitStr));
+            if(inList!=null) {
+                for (int i = 0; i < inList.size(); i++) {
+                    if (inList.get(i).getsCategory().equals(wUserItem.getsCategory())) {
+                        upgrade.setVisibility(View.VISIBLE);
+                        downgrade.setVisibility(View.GONE);
+                    }
+                }
             }
+
+            if(outList!=null){
+                for (int i = 0; i < outList.size(); i++) {
+                    if (outList.get(i).getsCategory().equals(wUserItem.getsCategory())) {
+                        upgrade.setVisibility(View.GONE);
+                        downgrade.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
         }
     }
 
@@ -257,28 +286,23 @@ public class WideUSerItemAdapter {
         @Override
         public void onBindViewHolder(@NonNull UserItemView holder, int position) {
             holder.bind(wUserItemList.get(position));
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if(mContext.getClass()==RecipeFinditemActivity.class){
-                        Intent intent= new Intent(mContext,RecipeAddActivity.class);
-                        //intent.putExtra("wUserItem", (Serializable) wUserItemList.get(position));
-                        intent.putExtra("sCategory", wUserItemList.get(position).getsCategory());
-                        intent.putExtra("nowAmount", wUserItemList.get(position).getNowAmount());
-                        intent.putExtra("total_price", wUserItemList.get(position).getTotal_price());
-                        intent.putExtra("maxCount", wUserItemList.get(position).getMaxCount());
-                        intent.putExtra("unit", wUserItemList.get(position).getUnit());
-                        //intent.putExtra("keys", reKeysList.get(position));
+
+                    Intent intent = new Intent(mContext, MainMoreActivity.class);
+                    intent.putExtra("keys", reKeysList.get(position));
+                    intent.putExtra("userItems", sCategoryList.get(position));
+                    intent.putExtra("lCategory", wUserItemList.get(position).getlCategory());
+                    intent.putExtra("sCategory", wUserItemList.get(position).getsCategory());
+                    intent.putExtra("maxDay", wUserItemList.get(position).getMaxDay());
+                    intent.putExtra("nowAmount", wUserItemList.get(position).getNowAmount());
+                    intent.putExtra("maxCount", wUserItemList.get(position).getMaxCount());
+                    intent.putExtra("unit", wUserItemList.get(position).getUnit());
+                    mContext.startActivity(intent);
 
 
-                        //mContext.startActivity(intent);
-                        //setResult(Activity.RESULT_OK,intent);
-                        ((Activity)mContext).setResult(RESULT_OK,intent);
-                        ((Activity)mContext).finish();
-
-                    }
                 }
 
 
@@ -290,22 +314,25 @@ public class WideUSerItemAdapter {
             return wUserItemList.size();
         }
     }
+
     private static final class MyProgressFormatter implements CircleProgressBar.ProgressFormatter {
         private static String DEFAULT_PATTERN;
         private String unit;
         private int num = 1;
+
         @SuppressLint("DefaultLocale")
         @Override
         public CharSequence format(int progress, int max) {
-             DEFAULT_PATTERN= "%d"+unit;
+            DEFAULT_PATTERN = "%d" + unit;
 
-             if(unit.equals("kg")||unit.equals("L")){
-                 num=1000;
-             }
-            return String.format(DEFAULT_PATTERN, progress/num);
+            if (unit.equals("kg") || unit.equals("L")) {
+                num = 1000;
+            }
+            return String.format(DEFAULT_PATTERN, progress / num);
         }
-        public MyProgressFormatter(String unit){
-            this.unit=unit;
+
+        public MyProgressFormatter(String unit) {
+            this.unit = unit;
         }
     }
 

@@ -9,14 +9,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.ncpaidemo.LoginActivity.strNick;
-import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
-
-public class FirebaseRecipeHelper {
+public class FirebaseRecipeHelper extends BaseActivity{
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRefrenceUsers;
@@ -38,7 +34,6 @@ public class FirebaseRecipeHelper {
         mRefrenceUsers = mDatabase.getReference("UserInfo").child(strNick).child("레시피목록");
 
     }
-
 
     public void readRecipe(FirebaseRecipeHelper.DataStatus dataStatus) {
 

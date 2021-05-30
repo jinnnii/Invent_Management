@@ -6,7 +6,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
+import static com.example.user.ncpaidemo.MainActivity.setListViewHeightBasedOnChildren;
 import static com.example.user.ncpaidemo.UserItemAdapter.isStringDouble;
 
-public class OcrInActivity extends AppCompatActivity {
+public class OcrInActivity extends BaseActivity {
 
     //note UserItem List!
     private ArrayList<UserItem> list = new ArrayList<>();
@@ -42,30 +44,28 @@ public class OcrInActivity extends AppCompatActivity {
         UserItemAdapter adpater = new UserItemAdapter(this, R.layout.content_ocr_in_list, list);
         listView.setAdapter(adpater);
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+                    listView.findViewById(R.id.item_name).clearFocus();
+                    listView.findViewById(R.id.item_sCategory).clearFocus();
+                    listView.findViewById(R.id.item_price).clearFocus();
+                    listView.findViewById(R.id.item_unit_amount).clearFocus();
+                    listView.findViewById(R.id.item_count).clearFocus();
+                    listView.findViewById(R.id.item_nDay).clearFocus();
+
+                }
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+
+        });
 
 
         setListViewHeightBasedOnChildren(listView);
-
-        findViewById(R.id.buttontest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                System.out.print("######### 리스트 : ");
-                for(int i=0; i<list.size(); i++){
-                    list.get(i).print();
-                }
-                System.out.println("\n");
-
-                for(int i=0; i<list.size(); i++){
-                    if(list.get(i).getUnit_price()<=0 || list.get(i).getUnit_amount()<=0 ||
-                            list.get(i).getCount()<=0 || list.get(i).getnDay()<=0){
-                        System.out.println("###########################빈칸 이나 잘못된 값이 입력되었습니다");
-                    }
-                }
-
-
-            }
-        });
 
 
         //note 상세입력 모두 입력후 확인 버튼
@@ -80,7 +80,7 @@ public class OcrInActivity extends AppCompatActivity {
                 boolean success=false;
 
                 for(int i=0; i<list.size(); i++){
-                    if(list.get(i).getUnit_price()<=0 || list.get(i).getUnit_amount()<=0 ||
+                    if(list.get(i).getPrice()<=0 || list.get(i).getUnit_amount()<=0 ||
                             list.get(i).getCount()<=0 || list.get(i).getnDay()<=0){
                         Toast.makeText(OcrInActivity.this, "빈칸 혹은 잘못된 값이 입력되었습니다", Toast.LENGTH_SHORT).show();
                         break;
@@ -91,7 +91,13 @@ public class OcrInActivity extends AppCompatActivity {
                     }
                     if(i==list.size()-1) success=true;
                 }
+
+
                 if(success) {
+                    for(int i=0; i<list.size();i++){
+                        list.get(i).setUnit_price(list.get(i).getPrice()/list.get(i).getCount());
+                        list.get(i).setAmount(list.get(i).getUnit_amount()*list.get(i).getCount());
+                    }
                     userHelper.addUserItem(list, new FirebaseUserHelper.DataStatus() {
                         @Override
                         public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
@@ -100,6 +106,11 @@ public class OcrInActivity extends AppCompatActivity {
                         @Override
                         public void DataIsInserted() {
                             Toast.makeText(OcrInActivity.this, "성공!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            inList = list;
+                            System.out.println("####### Ocr In Activiity 에서의 inList : "+inList);
+                            intent.putExtra("frag", 1);
+                            startActivity(intent);
                             finish();
                         }
 

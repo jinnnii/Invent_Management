@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends Fragment {
+import static com.example.user.ncpaidemo.BaseActivity.inList;
+import static com.example.user.ncpaidemo.BaseActivity.strNick;
 
+public class HomeActivity extends Fragment {
 
     private View view;
 
@@ -29,12 +33,20 @@ public class HomeActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag_home, container, false);
 
+        System.out.println("##### HomeActivity 에서의 inList : "+inList);
+
+        TextView title= (TextView) view.findViewById(R.id.title);
+        title.setText(strNick+" 냉장고");
+
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.item_list);
         new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
             @Override
             public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+                if(strNick ==null){
+                    Toast.makeText(getContext(), "strNick 이 종료됨", Toast.LENGTH_SHORT).show();
+                }
 
-                new WideUSerItemAdapter().setConfig(mRecyclerView, view.getContext(), userItems, keys);
+                new HomeAdapter().setConfig(mRecyclerView, getContext(), userItems, keys);
 
             }
 
@@ -58,7 +70,6 @@ public class HomeActivity extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(view.getContext(), AddImageTypeMenu.class);
-                intent.putExtra("data", "Test Popup");
                 startActivityForResult(intent, 1);
             }
         });
@@ -74,65 +85,4 @@ public class HomeActivity extends Fragment {
 
         return view;
     }
-
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //note 타이틀바 없애기
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //note 투명 배경
-        getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
-        setContentView(R.layout.frag_home);
-
-
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.item_list);
-        new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
-
-                new WideUSerItemAdapter().setConfig(mRecyclerView, HomeActivity.this, userItems, keys);
-
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
-
-        findViewById(R.id.input).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnPopupClick();
-            }
-        });
-
-        findViewById(R.id.setting_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-
-
-    }*/
-
-    public void mOnPopupClick(){
-        //데이터 담아서 팝업(액티비티) 호출
-    }
 }
-

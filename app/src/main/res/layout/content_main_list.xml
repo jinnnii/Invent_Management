@@ -56,12 +56,37 @@
                 android:text="이름"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/upgrade"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="upgrade.json"
+                app:lottie_loop="true"
+                app:lottie_repeatMode="restart" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/downgrade"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="downgrade.json"
+                    app:lottie_loop="true"
+                    app:lottie_repeatMode="restart" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/item_nDay"
-                android:layout_width="110dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:padding="5dp"
                 android:background="@drawable/button_round_solid"
                 android:gravity="center"

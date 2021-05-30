@@ -70,6 +70,9 @@ public class RecipeActivity extends Fragment {
             }
         });*/
 
+        Bundle bundle = getArguments();
+        strNick = bundle.getString("strNick");
+
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recipe_list);
         new FirebaseRecipeHelper().readRecipe(new FirebaseRecipeHelper.DataStatus() {
             @Override

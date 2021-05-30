@@ -24,11 +24,23 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1.1"
             android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/item_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:entries="@array/lCategory"
+                android:gravity="left"
+                android:spinnerMode="dialog"
+                android:theme="@style/spinner" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
+
 
             <ImageButton
                 android:id="@+id/delete"
@@ -40,6 +52,7 @@
                 android:background="@color/white"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_close" />
+
 
         </LinearLayout>
 
@@ -76,17 +89,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-            <Spinner
-                android:id="@+id/item_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left"
-                android:layout_weight="1"
+
+                <EditText
                 android:background="@null"
-                android:entries="@array/lCategory"
-                android:spinnerMode="dialog"
-                android:theme="@style/spinner" />
-            <EditText
+                android:textSize="14dp"
                 android:id="@+id/item_sCategory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -111,7 +117,7 @@
                 android:layout_weight="1">
 
                 <EditText
-                    android:id="@+id/item_unit_price"
+                    android:id="@+id/item_price"
                     android:background="@null"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

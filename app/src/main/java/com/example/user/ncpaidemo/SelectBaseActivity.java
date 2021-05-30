@@ -22,10 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
+import static com.example.user.ncpaidemo.MainActivity.setListViewHeightBasedOnChildren;
 import static com.example.user.ncpaidemo.SelfInActivity.REQUEST_CODE_MENU;
 
-public class SelectBaseActivity extends AppCompatActivity {
+public class SelectBaseActivity extends BaseActivity {
 
     TabHost tabHost;
 
@@ -38,10 +38,7 @@ public class SelectBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //note 타이틀바 없애기
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //note 투명 배경
-        getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
+
         setContentView(R.layout.content_select_base);
 
         Intent intent = getIntent();

@@ -41,7 +41,7 @@
             android:layout_weight="1">
             <EditText
                 android:background="@null"
-                android:id="@+id/menu_name"
+                android:id="@+id/recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -68,7 +68,7 @@
                 android:layout_weight="1">
 
                 <EditText
-                    android:id="@+id/menu_price"
+                    android:id="@+id/recipe_price"
                     android:background="@null"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -97,7 +97,7 @@
                 android:layout_weight="1">
 
                 <EditText
-                    android:id="@+id/menu_count"
+                    android:id="@+id/recipe_count"
                     android:background="@null"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -3,6 +3,7 @@ package com.example.user.ncpaidemo;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
 
@@ -39,12 +41,16 @@ public class UserItemAdapter extends BaseAdapter {
     static String unitStr[] = {"g", "kg", "mL", "L"};
     private int layout;
 
+    private int pos = -1;
+
     public UserItemAdapter(Context context, int layout, ArrayList<UserItem> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = data;
         this.layout = layout;
-        this.filteredItemList = data;
+        this.filteredItemList=data;
+
     }
+    public void setPosition(int position) {pos = position;}
 
     @Override
     public int getCount() {
@@ -61,6 +67,8 @@ public class UserItemAdapter extends BaseAdapter {
         return position;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint({"SetTextI18n", "CutPasteId", "WrongViewCast"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -74,7 +82,7 @@ public class UserItemAdapter extends BaseAdapter {
                 convertView = inflater.inflate(layout, parent, false);
                 holder.name = (EditText) convertView.findViewById(R.id.item_name);
                 holder.count = (EditText) convertView.findViewById(R.id.item_count);
-                holder.unit_price = (EditText) convertView.findViewById(R.id.item_unit_price);
+                holder.price = (EditText) convertView.findViewById(R.id.item_price);
                 holder.unit_amount = (EditText) convertView.findViewById(R.id.item_unit_amount);
                 holder.nDay = (EditText) convertView.findViewById(R.id.item_nDay);
                 holder.unit = (Spinner) convertView.findViewById(R.id.spinner);
@@ -86,7 +94,9 @@ public class UserItemAdapter extends BaseAdapter {
             }
             holder.ref = position;
 
-        } else {
+        }
+
+        else {
             if (convertView == null) {
                 convertView = inflater.inflate(layout, parent, false);
 
@@ -96,7 +106,6 @@ public class UserItemAdapter extends BaseAdapter {
 
 
         UserItem userItem = data.get(position);
-
 
         //note 추가할 사용자 원재료 리스트
 
@@ -108,36 +117,17 @@ public class UserItemAdapter extends BaseAdapter {
 
             //대분류+ 소분류
             TextView category = (TextView) convertView.findViewById(R.id.item_category);
-            category.setText(userItem.getlCategory() + " ) " + userItem.getsCategory());
-        }
-
-        //note 추가된 사용자 원재료 리스트
-        if (layout == R.layout.content_self_input_list) {
-            EditText name = (EditText) convertView.findViewById(R.id.item_name);
-            TextView category = (TextView) convertView.findViewById(R.id.item_category);
-            EditText nDay = (EditText) convertView.findViewById(R.id.item_nDay);
-
-            userItem.setName(userItem.getsCategory());
-            name.setText(userItem.getName());
-            nDay.setText("" + userItem.getnDay());
-
-            /*TextView lCategory =(TextView) convertView.findViewById(R.id.item_lCategory);
-            TextView sCategory =(TextView) convertView.findViewById(R.id.item_sCategory);
-            lCategory.setText(userItem.getlCategory());
-            sCategory.setText(userItem.getsCategory());*/
-
-            category.setText(userItem.getlCategory());
-            userItem.print();
-            System.out.println(userItem.getnDay());
-
-            convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    data.remove(position);
-                    notifyDataSetChanged();
+            category.setText(userItem.getlCategory() + " / " + userItem.getsCategory());
+            if(pos!=-1){
+                if(pos==position) {
+                    com.airbnb.lottie.LottieAnimationView select = (com.airbnb.lottie.LottieAnimationView) convertView.findViewById(R.id.item_select);
+                    select.setVisibility(View.VISIBLE);
                 }
-            });
+            }
+            else {
+                com.airbnb.lottie.LottieAnimationView select = (com.airbnb.lottie.LottieAnimationView) convertView.findViewById(R.id.item_select);
+                select.setVisibility(View.GONE);
+            }
         }
 
         //note 영수증 인식 결과 리스트
@@ -160,10 +150,10 @@ public class UserItemAdapter extends BaseAdapter {
 
             EditText name = (EditText) convertView.findViewById(R.id.item_name);
             EditText count = (EditText) convertView.findViewById(R.id.item_count);
-            EditText unit_price = (EditText) convertView.findViewById(R.id.item_unit_price);
+            EditText price = (EditText) convertView.findViewById(R.id.item_price);
             EditText unit_amount = (EditText) convertView.findViewById(R.id.item_unit_amount);
             EditText sCategory = (EditText) convertView.findViewById(R.id.item_sCategory);
-            TextView nDay = (EditText) convertView.findViewById(R.id.item_nDay);
+            EditText nDay = (EditText) convertView.findViewById(R.id.item_nDay);
             ImageButton delete = (ImageButton) convertView.findViewById(R.id.delete);
             Spinner unit = (Spinner) convertView.findViewById(R.id.spinner);
             Spinner category = (Spinner) convertView.findViewById(R.id.item_category);
@@ -173,7 +163,7 @@ public class UserItemAdapter extends BaseAdapter {
             holder.nDay.setText("" + userItem.getnDay());
             holder.name.setText(userItem.getName());
             holder.count.setText("" + userItem.getCount());
-            holder.unit_price.setText(""+userItem.getUnit_price());
+            holder.price.setText(""+userItem.getPrice());
             holder.sCategory.setText(userItem.getsCategory());
             holder.unit.setSelection(getStrPosition(userItem.getUnit(), unitStr));
             holder.lCategory.setSelection(getStrPosition(userItem.getlCategory(), lStr));
@@ -199,45 +189,6 @@ public class UserItemAdapter extends BaseAdapter {
                     }
                     System.out.println("\n");
                     notifyDataSetChanged();
-                }
-            });
-
-            new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
-                @Override
-                public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
-                    for (int i = 0; i < userItems.size(); i++) {
-                        if (userItem.getName().equals(userItems.get(i).getName())) {
-                            userItem.setnDay(userItems.get(i).getnDay());                   //유통기한
-                            userItem.setUnit_amount(userItems.get(i).getUnit_amount());     //상세수량
-                            userItem.setUnit(userItems.get(i).getUnit());                   //단위
-                            userItem.setlCategory(userItems.get(i).getlCategory());         //대분류
-                            userItem.setsCategory(userItems.get(i).getsCategory());         //소분류
-                            System.out.println("################ocr 리스트와 userItem 조회 ##################" + getStrPosition(userItems.get(i).getlCategory(), lStr));
-                            //userItems.get(i).print();
-                            //userItem.print();
-
-                            nDay.setText("" + userItems.get(i).getnDay());
-                            unit_amount.setText("" + userItems.get(i).getUnit_amount());
-                            category.setSelection(getStrPosition(userItems.get(i).getlCategory(), lStr));
-                            unit.setSelection(getStrPosition(userItems.get(i).getUnit(), unitStr));
-
-                            break;
-
-                        }
-                    }
-
-                }
-
-                @Override
-                public void DataIsInserted() {
-                }
-
-                @Override
-                public void DataIsUpdated() {
-                }
-
-                @Override
-                public void DataIsDeleted() {
                 }
             });
 
@@ -352,7 +303,7 @@ public class UserItemAdapter extends BaseAdapter {
             });
 
 
-            holder.unit_price.addTextChangedListener(new TextWatcher() {
+            holder.price.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     //String str = unit_price.getText().toString();
@@ -365,11 +316,11 @@ public class UserItemAdapter extends BaseAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (!isStringDouble(unit_price.getText().toString())) {
-                        filteredItemList.get(holder.ref).setUnit_price(-1);
+                    if (!isStringDouble(price.getText().toString())) {
+                        filteredItemList.get(holder.ref).setPrice(-1);
                     } else {
                         int str = Integer.parseInt(s.toString());
-                        filteredItemList.get(holder.ref).setUnit_price(str);
+                        filteredItemList.get(holder.ref).setPrice(str);
                         //userItem.print(":::: count :::::");
                     }
                 }
@@ -461,6 +412,7 @@ public class UserItemAdapter extends BaseAdapter {
                 });
             }
         }
+
 
         return convertView;
     }

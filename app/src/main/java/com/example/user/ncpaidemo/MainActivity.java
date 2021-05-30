@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,7 +24,9 @@ import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView; // 바텀 네비게이션 뷰
@@ -33,7 +36,7 @@ public class MainActivity extends BaseActivity {
     private HomeActivity frag2;
     private RecipeActivity frag3;
 
-    public static String image_path = null; //이미지 파일 경로
+    //public static String image_path = null; //이미지 파일 경로
 
 
     @Override
@@ -43,6 +46,7 @@ public class MainActivity extends BaseActivity {
 
         /* ***************************************************************************************************************** */
 
+        //strNick = getIntent().getStringExtra("name");
 
 
         //프래그
@@ -68,11 +72,31 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        System.out.println("::::::::::::::::::::::: strNick ::::::::::::::::::::: " +strNick);
+
         frag1=new ChartActivity();
         frag2=new HomeActivity();
         frag3=new RecipeActivity();
 
-        setFrag(1);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("strNick",strNick);
+
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("strNick",strNick);
+
+        Bundle bundle3 = new Bundle();
+        bundle3.putString("strNick",strNick);
+
+
+        frag1.setArguments(bundle1);
+        frag2.setArguments(bundle2);
+        frag3.setArguments(bundle3);
+
+        int frag= getIntent().getIntExtra("frag",0);
+        if(frag ==0){
+            setFrag(1);
+        }
+        else setFrag(frag);
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
 

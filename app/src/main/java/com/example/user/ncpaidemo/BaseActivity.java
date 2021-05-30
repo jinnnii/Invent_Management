@@ -11,9 +11,16 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 public class BaseActivity extends AppCompatActivity {
 
     static public String image_path = null;
+    static public String strNick = null;
+
+    static public ArrayList<UserItem> inList;
+    static public ArrayList<UserItem> outList;
+
 
 
 

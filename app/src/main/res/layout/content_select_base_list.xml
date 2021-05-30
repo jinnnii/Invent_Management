@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/baseList"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
+        android:layout_height="70dp"
         android:layout_margin="5dp">
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/base_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@color/grey_100"
-            android:padding="5dp"
-            android:layout_margin="5dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/base_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="2dp"
+                android:src="@color/purple_200" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/base_select"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:visibility="invisible"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="check.json"
+                app:lottie_loop="false"
+                app:lottie_repeatMode="restart" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="298dp"
@@ -48,16 +63,6 @@
                 android:gravity="center_vertical"
                 android:text="카테고리" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/base_select"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:visibility="invisible"
-            android:src="@drawable/ic_baseline_check_24" />
 
 
     </LinearLayout>

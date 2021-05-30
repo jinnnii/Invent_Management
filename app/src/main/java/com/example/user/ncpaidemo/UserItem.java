@@ -86,11 +86,8 @@ public class UserItem implements Serializable {
         //this.price=unit_price*count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-        this.amount = unit_amount * count;
-
-        //this.price=unit_price*count;
+    public void setCount(int count){
+        this.count=count;
     }
 
     public void setnDay(int nDay) {
@@ -105,9 +102,8 @@ public class UserItem implements Serializable {
         this.unit = unit;
     }
 
-    public void setUnit_amount(int unit_amount) {
+    public void setUnit_amount(int unit_amount){
         this.unit_amount = unit_amount;
-        this.amount = unit_amount * count;
     }
 
     public void setAmount(int amount) {this.amount = amount; }

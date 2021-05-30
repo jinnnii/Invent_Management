@@ -30,11 +30,12 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
 import static android.view.Gravity.RIGHT;
-import static com.example.user.ncpaidemo.SelectInActivity.setListViewHeightBasedOnChildren;
+import static com.example.user.ncpaidemo.MainActivity.setListViewHeightBasedOnChildren;
 
 public class OcrActivity extends PopupActivity {
 
@@ -51,6 +52,7 @@ public class OcrActivity extends PopupActivity {
     int item_total_count=0;
 
     Intent intent;
+    ArrayList<UserItem> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class OcrActivity extends PopupActivity {
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                intent.putExtra("userItem",list);
                 startActivity(intent);
                 finish();
             }
@@ -83,13 +87,13 @@ public class OcrActivity extends PopupActivity {
 
 
         //todo OCR API 직접 접근 [1]
-        /*SharedPreferences sharedPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
-
-        final String ocrApiGwUrl = sharedPref.getString("ocr_api_gw_url", "");
-        final String ocrSecretKey = sharedPref.getString("ocr_secret_key", "");
-
-        OcrActivity.PapagoNmtTask nmtTask = new OcrActivity.PapagoNmtTask();
-        nmtTask.execute(ocrApiGwUrl, ocrSecretKey);*/
+        //SharedPreferences sharedPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
+//
+        //final String ocrApiGwUrl = sharedPref.getString("ocr_api_gw_url", "");
+        //final String ocrSecretKey = sharedPref.getString("ocr_secret_key", "");
+//
+        //OcrActivity.PapagoNmtTask nmtTask = new OcrActivity.PapagoNmtTask();
+        //nmtTask.execute(ocrApiGwUrl, ocrSecretKey);
 
 
         //todo ocr 샘플 확인용 (OCR API 직접 접근 X) [2]
@@ -141,16 +145,22 @@ public class OcrActivity extends PopupActivity {
             //note 항목 그룹 정보
 
             for (int i = 0; i < path.subResults.length(); i++) {
-                JSONArray items = path.subResults.getJSONObject(i).getJSONArray("items");
+                JSONArray items = path.subResults.getJSONObject(i).optJSONArray("items");
 
                 for (int j = 0; j < items.length(); j++) {
+                    if(items!=null){
+                        item_name.add(path.items("item_name", i, j)); //note 항목명
+                        item_count.add(path.items("item_count", i, j)); //note 항목 수량
+                        if(path.items("item_unit_price", i, j)!=null) {
+                            item_unit_price.add(Integer.parseInt(path.items("item_unit_price", i, j).replace(",", ""))); //note 단가
+                        }else item_unit_price.add(0);
+                        //item_unit_price.add(0);
+                        if(path.items("item_price", i, j)!=null)
+                            item_price.add(Integer.parseInt(path.items("item_price", i, j).replace(",", ""))); //note 금액
+                        else item_price.add(0);
 
-                    item_name.add(path.items("item_name", i, j)); //note 항목명
-                    item_count.add(path.items("item_count", i, j)); //note 항목 수량
-                    item_unit_price.add(Integer.parseInt(path.items("item_unit_price", i, j).replace(",",""))); //note 단가
-                    item_price.add(Integer.parseInt(path.items("item_price", i, j).replace(",",""))); //note 금액
-
-                    item_total_count++;
+                        item_total_count++;
+                    }
 
                 }
             }
@@ -175,8 +185,6 @@ public class OcrActivity extends PopupActivity {
 
         ListView listView = findViewById(R.id.items);
 
-        ArrayList<UserItem> list = new ArrayList<>();
-
 
         for(int i=0; i<item_total_count;i++){
 
@@ -185,12 +193,42 @@ public class OcrActivity extends PopupActivity {
 
         }
 
+        new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+                for (int i = 0; i < list.size(); i++) {
+                    for(int j=0; j<userItems.size();j++) {
+                        if (list.get(i).getName().equals(userItems.get(j).getName())) {
+
+                            list.get(i).setUnit_amount(userItems.get(j).getUnit_amount());
+                            list.get(i).setUnit(userItems.get(j).getUnit());
+                            list.get(i).setsCategory(userItems.get(j).getsCategory());
+                            list.get(i).setlCategory(userItems.get(j).getlCategory());
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+            }
+
+            @Override
+            public void DataIsUpdated() {
+            }
+
+            @Override
+            public void DataIsDeleted() {
+            }
+        });
+
         UserItemAdapter adpater = new UserItemAdapter(this, R.layout.content_ocr_list, list);
         listView.setAdapter(adpater);
 
         setListViewHeightBasedOnChildren(listView);
 
-        intent.putExtra("userItem",list);
 
 
     }

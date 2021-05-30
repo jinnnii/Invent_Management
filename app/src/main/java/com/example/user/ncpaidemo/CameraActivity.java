@@ -53,6 +53,7 @@ public class CameraActivity extends BaseActivity{
         setContentView(R.layout.content_camera);
 
 
+
         // note 사진 저장 후 미디어 스캐닝을 돌려줘야 갤러리에 반영됨.
         mMediaScanner = MediaScanner.getInstance(getApplicationContext());
 

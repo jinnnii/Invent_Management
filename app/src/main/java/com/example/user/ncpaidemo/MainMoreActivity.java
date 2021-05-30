@@ -44,10 +44,6 @@ public class MainMoreActivity extends AppCompatActivity {
         maxDay.setText("D-"+intent.getIntExtra("maxDay",0));
 
 
-
-        for(int i=0; i<list.size();i++) {
-            list.get(i).print("####3");
-        }
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.user_item_list);
 
 

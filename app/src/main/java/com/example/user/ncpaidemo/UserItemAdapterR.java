@@ -95,9 +95,7 @@ public class UserItemAdapterR {
             this.mUserItemList = mUserItemList;
             this.mKeys = reKeys;
 
-            for(int i=0; i<mUserItemList.size();i++) {
-                mUserItemList.get(i).print();
-            }
+
         }
 
         @NonNull

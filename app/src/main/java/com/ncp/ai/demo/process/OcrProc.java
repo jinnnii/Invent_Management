@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.UUID;
 
-import static com.example.user.ncpaidemo.MainActivity.image_path;
+import static com.example.user.ncpaidemo.BaseActivity.image_path;
 
 
 public class OcrProc {

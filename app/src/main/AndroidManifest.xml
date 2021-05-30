@@ -31,6 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity android:name=".MainActivity"/>
         <activity android:name=".LoginActivity" /> <!-- <activity android:name=".MainActivity"/> -->
 
@@ -44,10 +46,11 @@
             android:name=".GalleryActivity"
             tools:ignore="Instantiatable" />
         <activity android:name=".SelectBaseActivity" />
+        <activity android:name=".SelectInActivity"/>
         <activity android:name=".OcrInActivity" />
+        <activity android:name=".OcrOutActivity" />
         <activity android:name=".SelfInActivity" />
         <activity android:name=".MainMoreActivity" />
-        <activity android:name=".OcrOutActivity" />
         <activity android:name=".RecipeAddActivity"/>
         <activity android:name=".RecipeFinditemActivity"/>
         <activity android:name=".RecipeMoreActivity"/>
@@ -58,9 +61,6 @@
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".OcrActivity"
-            android:theme="@android:style/Theme.Dialog" />
-        <activity
-            android:name=".SelectInActivity"
             android:theme="@android:style/Theme.Dialog" />
 
 

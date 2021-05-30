@@ -32,7 +32,7 @@ public class RecipeAdapter {
     private RecipeAdapters mRecipeAdapter;
 
     //public ArrayList<UserItem> userItemList= new ArrayList<>(); //메인에 보여질 통합 사용자 원재료 리스트
-
+    //todo 레시피탭에서 조회 및 상세보기 위함
     public void setConfig(RecyclerView recyclerView, Context context, List<Recipe> recipes, List<String> keys) {
         mContext = context;
         mRecipeAdapter = new RecipeAdapters(recipes, keys);

@@ -16,7 +16,7 @@ import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
 //첫 화면(로그인 화면)
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends BaseActivity {
     private ISessionCallback mSessionCallback;
 
     @Override
@@ -71,7 +71,10 @@ public class StartActivity extends AppCompatActivity {
                     intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
                     intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
                     intent.putExtra("email", result.getKakaoAccount().getEmail());
+
+                    strNick = result.getKakaoAccount().getProfile().getNickname();
                     startActivity(intent);
+                    finish();
 
                     Toast.makeText(StartActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                 }

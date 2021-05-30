@@ -12,9 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.ncpaidemo.LoginActivity.strNick;
-
-public class FirebaseUserHelper {
+public class FirebaseUserHelper extends BaseActivity{
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRefrenceUsers;
@@ -28,8 +26,16 @@ public class FirebaseUserHelper {
         void DataIsDeleted();
     }
 
+    public FirebaseUserHelper(String strNick){
+        mDatabase = FirebaseDatabase.getInstance();
+        System.out.println("::::::::::::::::::::::: Firebase User Helper2 || strNick ::::::::::::::::::::: " +strNick);
+        mRefrenceUsers = mDatabase.getReference("UserInfo").child(strNick).child("식자재목록");
+
+    }
+
     public FirebaseUserHelper(){
         mDatabase = FirebaseDatabase.getInstance();
+        System.out.println("::::::::::::::::::::::: Firebase User Helper1 || strNick ::::::::::::::::::::: " +strNick);
         mRefrenceUsers = mDatabase.getReference("UserInfo").child(strNick).child("식자재목록");
 
     }
@@ -103,7 +109,7 @@ public class FirebaseUserHelper {
         }
 
         public void updateUserItem(String key, UserItem userItem, final DataStatus dataStatus){
-            mRefrenceUsers.child(strNick).child("식자재목록").child(key).setValue(userItem)
+            mRefrenceUsers.child(key).setValue(userItem)
                 .addOnSuccessListener(new OnSuccessListener<Void>(){
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -119,35 +125,6 @@ public class FirebaseUserHelper {
                         dataStatus.DataIsDeleted();
                     }
                 });
-        }
-
-        public void addandUpate(ArrayList<UserItem> list, FirebaseUserHelper.DataStatus dataStatus){
-
-            ArrayList<UserItem> addItem = new ArrayList<>(); //새로 추가할 아이템
-            ArrayList<UserItem> updateItem = new ArrayList<>(); // 업데이트할 아이템
-            ArrayList<Integer> position = new ArrayList<>();
-
-            readUserItem(dataStatus);
-
-            for (int i = 0; i < list.size(); i++) {
-                for (int j = 0; j < bases.size(); j++) {
-                    if (list.get(i).equals(bases.get(j))) {
-                        updateItem.add(list.get(i));
-                        position.add(j);
-
-                        break;
-                    } else {
-                        addItem.add(list.get(i));
-                    }
-                }
-            }
-            addUserItem (addItem, dataStatus);
-
-            for(int i=0; i<updateItem.size(); i++) {
-                //updateItem.setAll(datas.get(position.get(i)))
-                //updateItem(keys.get(position.get(i)),updateItem.get(i),dataStatus);
-            }
-
         }
 
     }

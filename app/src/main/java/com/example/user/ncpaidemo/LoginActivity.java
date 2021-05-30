@@ -4,6 +4,8 @@ package com.example.user.ncpaidemo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -45,7 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         strEmail = intent.getStringExtra("email");
 
         TextView user_NickName = findViewById(R.id.user_Nickname);
-        ImageView user_Profile = findViewById(R.id.user_Profile);
+        de.hdodenhof.circleimageview.CircleImageView user_Profile = findViewById(R.id.user_Profile);
+
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.wave);
+        user_Profile.startAnimation(animation);
 
         sendInfo = (Button) findViewById(R.id.button_send);
         sendInfo.setOnClickListener(new Button.OnClickListener() {
@@ -72,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("name",strNick);
                 startActivity(intent);
+                finish();
             }
         });
 

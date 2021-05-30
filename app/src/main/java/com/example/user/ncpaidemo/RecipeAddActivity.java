@@ -90,8 +90,7 @@ public class RecipeAddActivity extends AppCompatActivity {
 
                         for (int j = 0; j < wList.size(); j++) {
                             if (rList.get(i).getsCategory().equals(wList.get(j).getsCategory())) {
-                                System.out.println("########겹친다 : ");
-                                wList.get(j).print();
+
                                 total_price = wList.get(j).getTotal_price();
                                 total_amount = wList.get(j).getNowAmount();
                                 break;
@@ -101,13 +100,11 @@ public class RecipeAddActivity extends AppCompatActivity {
                         System.out.println("########가격 : "+rList.get(i).getAmount()+" || " +total_price +"|| "+total_amount);
                         rList.get(i).setPrice(unit_amount); //아이템당 가격
                         total_unit_price += unit_amount;
-                        System.out.println("########## 확이 버튼 누름############");
-                        rList.get(i).print();
 
                     }
 
 
-                    recipe = new Recipe(recipeName, recipePrice, total_unit_price, rList);
+                    recipe = new Recipe(recipeName, recipePrice, total_unit_price,1, rList);
 
                     helper.addRecipe(recipe, new FirebaseRecipeHelper.DataStatus() {
                         @Override
@@ -160,10 +157,7 @@ public class RecipeAddActivity extends AppCompatActivity {
                 listView.setAdapter(adapters);
 
 
-                for (int i = 0; i < rList.size(); i++) {
-                    System.out.println("####r List 결과값");
-                    rList.get(i).print();
-                }
+
                 //list.add((WideUserItem) data.getSerializableExtra("wUserItem"));
                 //keys.add( data.getStringExtra("keys"));
                 setListViewHeightBasedOnChildren(listView);
