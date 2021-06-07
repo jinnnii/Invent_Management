@@ -1,5 +1,6 @@
 package com.example.user.ncpaidemo;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,6 +27,12 @@ public class MainMoreActivity extends AppCompatActivity {
         //note 투명 배경
         getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
         setContentView(R.layout.content_main_more);
+
+        ObjectAnimator imgAnimT = ObjectAnimator.ofFloat(findViewById(R.id.titleAnim), "translationY", -50f,-250f).setDuration(500);
+        ObjectAnimator infoAnimT = ObjectAnimator.ofFloat(findViewById(R.id.item_info), "translationY", -100f,-40f).setDuration(1000);
+        imgAnimT.start();
+        infoAnimT.start();
+
 
         Intent intent = getIntent();
 

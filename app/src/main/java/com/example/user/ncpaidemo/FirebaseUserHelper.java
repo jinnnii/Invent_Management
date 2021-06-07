@@ -17,10 +17,10 @@ public class FirebaseUserHelper extends BaseActivity{
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRefrenceUsers;
     private ArrayList<UserItem> bases; // 조회 결과 Array List
-    List<String> keys; // 조회 결과 key List
+    ArrayList<String> keys; // 조회 결과 key List
 
     public interface DataStatus{
-        void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys);
+        void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -126,5 +126,6 @@ public class FirebaseUserHelper extends BaseActivity{
                     }
                 });
         }
+
 
     }

@@ -21,6 +21,8 @@ public class BaseActivity extends AppCompatActivity {
     static public ArrayList<UserItem> inList;
     static public ArrayList<UserItem> outList;
 
+    static public boolean push_count = true;
+
 
 
 

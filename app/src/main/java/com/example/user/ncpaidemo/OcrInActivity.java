@@ -2,10 +2,13 @@ package com.example.user.ncpaidemo;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -85,7 +88,7 @@ public class OcrInActivity extends BaseActivity {
                         Toast.makeText(OcrInActivity.this, "빈칸 혹은 잘못된 값이 입력되었습니다", Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    if(list.get(i).getlCategory()==null||list.get(i).getsCategory().equals("")||list.get(i).getUnit()=="▼"){
+                    if(list.get(i).getlCategory()==null||list.get(i).getsCategory().equals("")||list.get(i).getUnit().contains("▼")){
                         Toast.makeText(OcrInActivity.this, "카테고리를 다시 확인하세요", Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -100,7 +103,7 @@ public class OcrInActivity extends BaseActivity {
                     }
                     userHelper.addUserItem(list, new FirebaseUserHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+                        public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
                         }
 
                         @Override
@@ -128,5 +131,20 @@ public class OcrInActivity extends BaseActivity {
         });
 
     }
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View focusView = getCurrentFocus();
+        if (focusView != null) {
+            Rect rect = new Rect();
+            focusView.getGlobalVisibleRect(rect);
+            int x = (int) ev.getX(), y = (int) ev.getY();
+            if (!rect.contains(x, y)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                focusView.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

@@ -86,7 +86,7 @@ public class SelectInActivity extends BaseActivity {
         ListView listView = (ListView) findViewById(R.id.in_group);
         new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+            public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
                 //new WideUSerItemAdapter().setConfig(mRecyclerView, getContext(), userItems, keys);
                 UserItemAdapter adpater = new UserItemAdapter(SelectInActivity.this, R.layout.content_select_in_list, userItems);
                 listView.setAdapter(adpater);

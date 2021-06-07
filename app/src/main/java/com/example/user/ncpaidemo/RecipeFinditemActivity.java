@@ -25,7 +25,7 @@ public class RecipeFinditemActivity extends AppCompatActivity {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.wUserItem_list);
         new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+            public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
 
                 new WideUSerItemAdapter().setConfig(mRecyclerView, RecipeFinditemActivity.this, userItems, keys);
 

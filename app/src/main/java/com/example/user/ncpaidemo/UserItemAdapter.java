@@ -3,10 +3,12 @@ package com.example.user.ncpaidemo;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -158,16 +160,17 @@ public class UserItemAdapter extends BaseAdapter {
             Spinner unit = (Spinner) convertView.findViewById(R.id.spinner);
             Spinner category = (Spinner) convertView.findViewById(R.id.item_category);
 
+            if(userItem.getnDay()==0) holder.nDay.setHint("유통기한");
+            else holder.nDay.setText("" + userItem.getnDay());
+            if(userItem.getUnit_amount()==0)holder.unit_amount.setHint("상세수량");
+            else holder.unit_amount.setText("" + userItem.getUnit_amount());
 
-            holder.unit_amount.setText("" + userItem.getUnit_amount());
-            holder.nDay.setText("" + userItem.getnDay());
             holder.name.setText(userItem.getName());
             holder.count.setText("" + userItem.getCount());
             holder.price.setText(""+userItem.getPrice());
             holder.sCategory.setText(userItem.getsCategory());
             holder.unit.setSelection(getStrPosition(userItem.getUnit(), unitStr));
             holder.lCategory.setSelection(getStrPosition(userItem.getlCategory(), lStr));
-
 
             //name.setText(userItem.getName());
             //count.setText("" + userItem.getCount());
@@ -201,7 +204,6 @@ public class UserItemAdapter extends BaseAdapter {
                     String str = (String) holder.lCategory.getSelectedItem();
 
                     AssetManager assetManager = arg1.getResources().getAssets();
-
                     try {
                         InputStream is = assetManager.open("base.json");
                         InputStreamReader isr = new InputStreamReader(is);
@@ -259,6 +261,8 @@ public class UserItemAdapter extends BaseAdapter {
 
                         notifyDataSetChanged();
 
+                        holder.sCategory.requestFocus();
+
 
                     } catch (IOException | JSONException e) {
                     }
@@ -276,6 +280,7 @@ public class UserItemAdapter extends BaseAdapter {
 
                     filteredItemList.get(holder.ref).setUnit(str);
                     //userItem.setUnit(str);
+                    holder.unit_amount.requestFocus();
                 }
 
                 @Override
@@ -414,6 +419,7 @@ public class UserItemAdapter extends BaseAdapter {
         }
 
 
+
         return convertView;
     }
 
@@ -429,7 +435,7 @@ public class UserItemAdapter extends BaseAdapter {
 
     public int getStrPosition(String str, String[] strArray) {
         int pos = 0;
-        if (str==null||str.equals("▼")) {
+        if (str==null||str.contains("▼")) {
             return pos;
         }
         for (int i = 0; i < strArray.length; i++) {
@@ -440,4 +446,5 @@ public class UserItemAdapter extends BaseAdapter {
         return pos;
     }
 
-}
+
+    }

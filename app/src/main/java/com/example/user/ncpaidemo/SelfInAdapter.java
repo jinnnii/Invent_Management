@@ -256,7 +256,7 @@ public class SelfInAdapter extends BaseAdapter {
 
     public int getStrPosition(String str, String[] strArray) {
         int pos = 0;
-        if (str == null || str.equals("▼")) {
+        if (str == null || str.contains("▼")) {
             return pos;
         }
         for (int i = 0; i < strArray.length; i++) {

@@ -1,9 +1,11 @@
 package com.example.user.ncpaidemo;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -37,7 +39,7 @@ import static android.view.Gravity.CENTER_VERTICAL;
 import static android.view.Gravity.RIGHT;
 import static com.example.user.ncpaidemo.MainActivity.setListViewHeightBasedOnChildren;
 
-public class OcrActivity extends PopupActivity {
+public class OcrActivity extends BaseActivity {
 
     String year, month, day;
     String store_name;
@@ -57,11 +59,14 @@ public class OcrActivity extends PopupActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //note 타이틀바 없애기
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //note 투명 배경
-        getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
+
         setContentView(R.layout.content_ocr);
+
+        ObjectAnimator nextAnim = ObjectAnimator.ofFloat(findViewById(R.id.next), "translationY", 1000f, 0f).setDuration(1000);
+        ObjectAnimator titleAnim = ObjectAnimator.ofFloat(findViewById(R.id.title), "translationY", -50f, 0f).setDuration(1000);
+
+        nextAnim.start();
+        nextAnim.start();
 
         if(getIntent().getIntExtra("inoutFlag",0)==0) {
             intent = new Intent(getApplicationContext(), OcrInActivity.class);
@@ -78,6 +83,16 @@ public class OcrActivity extends PopupActivity {
             }
         });
 
+        findViewById(R.id.repeat_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), AddImageTypeMenu.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         resultOcr();
 
@@ -88,18 +103,18 @@ public class OcrActivity extends PopupActivity {
 
         //todo OCR API 직접 접근 [1]
         //SharedPreferences sharedPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
-//
+////
         //final String ocrApiGwUrl = sharedPref.getString("ocr_api_gw_url", "");
         //final String ocrSecretKey = sharedPref.getString("ocr_secret_key", "");
-//
+////
         //OcrActivity.PapagoNmtTask nmtTask = new OcrActivity.PapagoNmtTask();
         //nmtTask.execute(ocrApiGwUrl, ocrSecretKey);
-
-
+//
+//
         //todo ocr 샘플 확인용 (OCR API 직접 접근 X) [2]
         String str = getString(R.string.ocr_sample);
         ReturnThreadResult(str); //note JSON 결과값 나누기
-
+//
 
     }
 
@@ -195,7 +210,7 @@ public class OcrActivity extends PopupActivity {
 
         new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+            public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
                 for (int i = 0; i < list.size(); i++) {
                     for(int j=0; j<userItems.size();j++) {
                         if (list.get(i).getName().equals(userItems.get(j).getName())) {
@@ -361,7 +376,7 @@ public class OcrActivity extends PopupActivity {
         TextView month_day = (TextView) findViewById(R.id.month_day);
 
         store.setText(store_name);
-        years.setText(year + "년");
+        years.setText(year + "년 ");
         month_day.setText(month + "월" + " " + day + "일");
 
     }

@@ -8,6 +8,7 @@ public class Recipe implements Serializable {
     private int price;
     private int total_unit_price;
     private int count;
+    private String img;
     private ArrayList<RecipeItem> userItems = new ArrayList<>();
 
     public String getName() {
@@ -51,6 +52,23 @@ public class Recipe implements Serializable {
     }
 
     public Recipe() {
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Recipe(String name, int price, int total_unit_price, int count, ArrayList<RecipeItem> wUserItems, String img) {
+        this.name = name;
+        this.price = price;
+        this.userItems = wUserItems;
+        this.total_unit_price =total_unit_price;
+        this.count=count;
+        this.img = img;
     }
 
     public Recipe(String name, int price, int total_unit_price, int count, ArrayList<RecipeItem> wUserItems) {

@@ -1,12 +1,18 @@
 package com.example.user.ncpaidemo;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakao.usermgmt.response.model.User;
@@ -30,6 +36,7 @@ public class OcrOutActivity extends BaseActivity {
     private List<String> keyList;
 
     private ArrayList<Recipe> loadList;
+    private final String DEFAULT = "DEFAULT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +100,7 @@ public class OcrOutActivity extends BaseActivity {
 
         new FirebaseUserHelper().readUserItem(new FirebaseUserHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {    //메뉴 리스트
+            public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {    //메뉴 리스트
                 userItemArrayList = userItems;
                 keyList = keys;
             }
@@ -253,7 +260,8 @@ public class OcrOutActivity extends BaseActivity {
                     for (int i = 0; i < updateList.size(); i++) {
                         new FirebaseUserHelper().updateUserItem(updateKeys.get(i), updateList.get(i), new FirebaseUserHelper.DataStatus() {
                             @Override
-                            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+                            public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
+
                             }
 
                             @Override
@@ -275,7 +283,7 @@ public class OcrOutActivity extends BaseActivity {
                     for (int i = 0; i < deleteList.size(); i++) {
                         new FirebaseUserHelper().deleteUserItem(deleteKeys.get(i), new FirebaseUserHelper.DataStatus() {
                             @Override
-                            public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+                            public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
                             }
 
                             @Override
@@ -293,10 +301,45 @@ public class OcrOutActivity extends BaseActivity {
                             }
                         });
                     }
+
                 }
             }
         });
 
+    }
+
+    void createNotificationChannel(String channelId, String channelName, int importance)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, importance));
+        }
+    }
+
+    void createNotification(String channelId, int id, String title, String text, Intent intent)
+    {
+        PendingIntent pendingIntent = PendingIntent.getActivity(OcrOutActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(OcrOutActivity.this, channelId)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSmallIcon(R.drawable.title)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setContentIntent(pendingIntent)    // 클릭시 설정된 PendingIntent가 실행된다
+                .setAutoCancel(true)                // true이면 클릭시 알림이 삭제된다
+                //.setTimeoutAfter(1000)
+                //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(id, builder.build());
+    }
+
+    void destroyNotification(int id)
+    {
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(id);
     }
 
 }

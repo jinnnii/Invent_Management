@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey_100"
     tools:context=".SelfInActivity">
-    
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                     <TextView
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="입고 직접 선택"
+                        android:text="출고 직접 선택"
                         android:gravity="center"
                         android:textSize="18sp"
                         android:textStyle="bold"

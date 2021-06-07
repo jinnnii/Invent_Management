@@ -89,7 +89,7 @@ public class SelfInActivity extends BaseActivity {
                         Toast.makeText(SelfInActivity.this, "빈칸 혹은 잘못된 값이 입력되었습니다", Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    if(list.get(i).getsCategory().equals("")||list.get(i).getUnit().equals("▼")){
+                    if(list.get(i).getsCategory().equals("")||list.get(i).getUnit().contains("▼")){
                         Toast.makeText(SelfInActivity.this, "카테고리를 다시 확인하세요", Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -104,7 +104,7 @@ public class SelfInActivity extends BaseActivity {
 
                     userHelper.addUserItem(list, new FirebaseUserHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(ArrayList<UserItem> userItems, List<String> keys) {
+                        public void DataIsLoaded(ArrayList<UserItem> userItems, ArrayList<String> keys) {
                         }
 
                         @Override

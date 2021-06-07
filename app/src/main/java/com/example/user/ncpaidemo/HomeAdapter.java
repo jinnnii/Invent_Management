@@ -2,8 +2,14 @@ package com.example.user.ncpaidemo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,12 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.user.ncpaidemo.BaseActivity.inList;
 import static com.example.user.ncpaidemo.BaseActivity.outList;
+import static com.example.user.ncpaidemo.BaseActivity.push_count;
+import static com.example.user.ncpaidemo.HomeActivity.DEFAULT;
+import static com.example.user.ncpaidemo.R.color.colorAccent;
 import static com.example.user.ncpaidemo.R.color.progress1;
 import static com.example.user.ncpaidemo.R.color.white;
 import static com.example.user.ncpaidemo.SelectBaseActivity.baseIntent;
 import static com.example.user.ncpaidemo.SelectBaseActivity.lStr;
+import static java.lang.Math.abs;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 
@@ -44,7 +56,7 @@ public class HomeAdapter{
 
     private ArrayList<ArrayList<String>> reKeysList = new ArrayList<>(); //sCategory 대로 정렬한 사용자 원재료 리스트
 
-    public ArrayList<WideUserItem> wUserItemList = new ArrayList<>(); //메인에 보여질 통합 사용자 원재료 리스트
+    private ArrayList<WideUserItem> wUserItemList = new ArrayList<>(); //메인에 보여질 통합 사용자 원재료 리스트
 
     public ArrayList<WideUserItem> wUserItemsForRecipe = new ArrayList<>(); // 레시피에 들어갈 사용자 원재료 리스트
 
@@ -153,6 +165,7 @@ public class HomeAdapter{
             wUserItem.setTotal_price(total_price);
 
             wUserItemList.add(wUserItem);
+
         }
 
 
@@ -160,6 +173,17 @@ public class HomeAdapter{
         mUserItemAdapter = new UserItemAdapter(wUserItemList, reKeys);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mUserItemAdapter);
+
+        for(int i=0; i<wUserItemList.size();i++){
+            if(wUserItemList.get(i).getNowAmount()<1000 && push_count ==true){
+                push_count = false;
+                createNotificationChannel (DEFAULT, "기본 채널", NotificationManager.IMPORTANCE_HIGH);
+                Intent intent = new Intent(mContext, MainActivity.class);       // 클릭시 실행할 activity를 지정
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                createNotification (DEFAULT, 1, "재고량 부족", "재고량이 1kg 미만입니다",intent);
+            }
+        }
 
         /*}
         catch(Exception e) {
@@ -222,7 +246,11 @@ public class HomeAdapter{
 
 
             name.setText(wUserItem.getsCategory());
-            nDay.setText("D-" + wUserItem.getMaxDay());
+            if(wUserItem.getMaxDay()<0){
+                nDay.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
+                nDay.setText("D+"+abs(wUserItem.getMaxDay()));
+            }
+            else nDay.setText("D-" + wUserItem.getMaxDay());
 
             String unitStr = null;
             int amountUnity = wUserItem.getNowAmount();
@@ -336,4 +364,39 @@ public class HomeAdapter{
         }
     }
 
+
+
+    void createNotificationChannel(String channelId, String channelName, int importance)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationManager notificationManager = (NotificationManager)mContext.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, importance));
+        }
+    }
+
+    void createNotification(String channelId, int id, String title, String text, Intent intent)
+    {
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, channelId)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSmallIcon(R.drawable.title)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setContentIntent(pendingIntent)    // 클릭시 설정된 PendingIntent가 실행된다
+                .setAutoCancel(true)                // true이면 클릭시 알림이 삭제된다
+                //.setTimeoutAfter(1000)
+                //.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+
+        NotificationManager notificationManager = (NotificationManager)mContext.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(id, builder.build());
+    }
+
+    void destroyNotification(int id)
+    {
+        NotificationManager notificationManager = (NotificationManager)mContext.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(id);
+    }
 }
